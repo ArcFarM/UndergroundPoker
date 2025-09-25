@@ -95,9 +95,13 @@ namespace UnderGroundPoker.Prefab.Card
                     Transform topCard = transform.GetChild(transform.childCount - 1);
                     cards.Add(topCard.gameObject);
                     topCard.SetParent(null);
+                    //TODO : 카드 뽑기 애니메이션 수행
+                    /*
+                     대상 플레이어 방향으로 이동 및 회전
+                     */
                 }
             }
-
+            
             return cards;
         }
 
