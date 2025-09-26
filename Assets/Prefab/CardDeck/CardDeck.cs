@@ -21,8 +21,27 @@ namespace UnderGroundPoker.Prefab.Card
             3. 기본 설정 : 카드 덱 높이는 53(52 + 조커)장에 대해 0.265f = 장당 0.005f
 
          */
+        #region Variables
         float baseHeight = 0.265f; //52장 + 조커 1장 (카드 1장당 0.005f)
         float cardHeight = 0.005f; //카드 1장당 높이
+
+        List<GameObject> graveyard; //버린 카드 더미
+        List<GameObject> removedCard; //제외된 카드 더미
+
+        public GameObject defaultDeck; //기본 덱
+        public GameObject currDeck; //현재 덱
+        public GameObject beforeLastModify; //마지막 수정 이전 상태
+        #endregion
+
+        #region Properties
+        public int CardCount => transform.childCount; //덱에 남아있는 카드 매수
+        public bool IsEmtpy => transform.childCount == 0; //덱이 비었는지 여부
+
+
+        #endregion
+
+        #region Unity Methods
+
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
@@ -35,18 +54,23 @@ namespace UnderGroundPoker.Prefab.Card
 
         }
 
+        #endregion
+
+        #region Custom Methods
+
+        #region Default Deck Functions
         public void DeckShuffle()
         {
             /*
                         카드 섞기
             2. 무작위로 카드를 섞어 놓고
             3. 카드 섞기 애니메이션 실행
-             */
+                */
 
             //자식 오브젝트들 중 활성화된 오브젝트들 가져오기
             int count = transform.childCount;
             GameObject[] cards = new GameObject[count];
-            for(int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
 
                 cards[i] = transform.GetChild(i).gameObject;
@@ -73,11 +97,11 @@ namespace UnderGroundPoker.Prefab.Card
             animator.SetTrigger("Shuffle");
         }
 
-        public void DeckReplace ()
+        public void ArrangeHeight()
         {
             //덱 높이를 재조정
             int count = transform.childCount;
-            for(int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
                 Transform card = transform.GetChild(i);
                 card.localPosition = new Vector3(0, i * cardHeight / baseHeight, 0);
@@ -88,24 +112,84 @@ namespace UnderGroundPoker.Prefab.Card
         {
             //덱 맨 위에서 카드 n장 뽑기 (가능하면)
             List<GameObject> cards = new List<GameObject>();
-            for(int i = 0; i < n; i++)
+            for (int i = 0; i < n; i++)
             {
-                if(transform.childCount > 0)
+                if (transform.childCount > 0)
                 {
                     Transform topCard = transform.GetChild(transform.childCount - 1);
                     cards.Add(topCard.gameObject);
                     topCard.SetParent(null);
                     //TODO : 카드 뽑기 애니메이션 수행
                     /*
-                     대상 플레이어 방향으로 이동 및 회전
-                     */
+                        대상 플레이어 방향으로 이동 및 회전
+                        */
                 }
             }
-            
+
+            //카드 다 뽑고 높이 재조정
+            ArrangeHeight();
             return cards;
         }
 
-        
+        public void ReturnCard(List<GameObject> cards)
+        {
+            //카드 덱에 카드 반납
+            foreach (GameObject card in cards)
+            {
+                card.transform.SetParent(transform);
+                card.transform.localPosition = new Vector3(0, transform.childCount * cardHeight / baseHeight, 0);
+                card.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                //TODO : 카드 반납 애니메이션 수행
+                /*
+                    대상 카드 덱 방향으로 이동 및 회전
+                    */
+            }
+            //카드 다 반납하고 높이 재조정
+            ArrangeHeight();
+        }
+
+        public void DiscardCard(List<GameObject> cards, List<GameObject> destination)
+        {
+            foreach (GameObject card in cards)
+            {
+                card.transform.SetParent(null);
+                //TODO : 카드 버리기 애니메이션 수행
+                /*
+                    대상 카드 더미 방향으로 이동 및 회전
+                    */
+                destination.Add(card);
+            }
+        }
+
+        public void DeckReset()
+        {
+            //덱 리셋
+            //버린 카드들을 모두 덱에 반납하고 덱 섞기
+            ReturnCard(graveyard);
+            graveyard.Clear();
+            DeckShuffle();
+            ArrangeHeight();
+        }
+
+        public void TrueDeckReset()
+        {
+            //제외된 카드들까지 모두 한꺼번에 덱에 반납하고 덱 섞기
+            ReturnCard(graveyard);
+            graveyard.Clear();
+            ReturnCard(removedCard);
+            removedCard.Clear();
+            DeckShuffle();
+            ArrangeHeight();
+        }
+        #endregion
+
+        #region special card interaction
+        #endregion
+
+        #endregion
+
+
+
 
     }
 
