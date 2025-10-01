@@ -88,8 +88,8 @@ namespace UnderGroundPoker.Prefab.Card
                 toChange.transform.SetSiblingIndex(rnd);
                 changeWith.transform.SetSiblingIndex(idx);
                 //높이 재설정
-                toChange.transform.localPosition = new Vector3(0, rnd * cardHeight / baseHeight, 0);
-                changeWith.transform.localPosition = new Vector3(0, idx * cardHeight / baseHeight, 0);
+                toChange.transform.localPosition = new Vector3(0, 0, rnd * cardHeight / baseHeight);
+                changeWith.transform.localPosition = new Vector3(0, 0, idx * cardHeight / baseHeight);
             }
 
             //카드 섞기 애니메이션 실행
@@ -104,13 +104,13 @@ namespace UnderGroundPoker.Prefab.Card
             for (int i = 0; i < count; i++)
             {
                 Transform card = transform.GetChild(i);
-                card.localPosition = new Vector3(0, i * cardHeight / baseHeight, 0);
+                card.localPosition = new Vector3(0, 0, i * cardHeight / baseHeight);
             }
         }
 
         public List<GameObject> DrawCard(int n)
         {
-            //덱 맨 위에서 카드 n장 뽑기 (가능하면)
+            //덱 맨 위에서 카드 n장 뽑기 (안되면 가능한 만큼)
             List<GameObject> cards = new List<GameObject>();
             for (int i = 0; i < n; i++)
             {
@@ -134,10 +134,16 @@ namespace UnderGroundPoker.Prefab.Card
         public void ReturnCard(List<GameObject> cards)
         {
             //카드 덱에 카드 반납
-            foreach (GameObject card in cards)
+            int count = transform.childCount;
+            for(int i = 0; i < cards.Count; i++)
             {
+
+                GameObject card = cards[i];
+                //널 체크 및 중복 검사
+                if (card == null || card.transform.parent == transform) continue;
+
                 card.transform.SetParent(transform);
-                card.transform.localPosition = new Vector3(0, transform.childCount * cardHeight / baseHeight, 0);
+                card.transform.localPosition = new Vector3(0, 0, count * cardHeight / baseHeight);
                 card.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 //TODO : 카드 반납 애니메이션 수행
                 /*
