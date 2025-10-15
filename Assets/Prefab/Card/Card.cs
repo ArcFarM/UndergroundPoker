@@ -4,11 +4,10 @@ namespace UnderGroundPoker.Prefab.Card
 {
     public enum CardSuit
     {
-        Spades,
-        Diamonds,
-        Hearts,
-        Clubs,
-        Joker
+        Spade,
+        Diamond,
+        Heart,
+        Club
     }
 
     public enum CardRank
@@ -48,6 +47,7 @@ namespace UnderGroundPoker.Prefab.Card
         public CardSuit Suit => suit;
         public CardRank Rank => rank;
         public bool IsSelected { get => isSelected; set => isSelected = value; }
+        public bool IsJoker => rank == CardRank.Joker;
         #endregion
 
         #region Unity Methods
@@ -82,6 +82,23 @@ namespace UnderGroundPoker.Prefab.Card
             }
         }
 
+        public bool Equals(Card other)
+        {
+            return this.suit == other.suit && this.rank == other.rank;
+        }
+
+        public int CompareTo(Card other)
+        {
+            if (this.rank != other.rank)
+            {
+                return this.rank.CompareTo(other.rank);
+            }
+            else
+            {
+                return this.suit.CompareTo(other.suit);
+            }
+        }
+
         public void ToggleSelect()
         {
             if(isSelected)
@@ -95,6 +112,18 @@ namespace UnderGroundPoker.Prefab.Card
                 //선택 상태로 변경
             }
         }
+
+        #region Display Methods
+        public void ShowCardInfo()
+        {
+            Debug.Log($"Card Info - Suit: {suit}, Rank: {rank}, IsSelected: {isSelected}");
+        }
+
+        public override string ToString()
+        {
+            return $"{rank} of {suit}";
+        }
+        #endregion
         #endregion
     }
 }

@@ -9,109 +9,202 @@ namespace UnderGroundPoker.Prefab.Card
     {
         //조커가 있으므로 파이브카드 추가
         Top = 0,
-        OnePair = 1, TwoPair = 2,
-        Triple = 3, Straight = 4, Flush = 5,
-        FullHouse = 6, FourCard = 7,
-        StraightFlush = 8, RoyalStraightFlsuh = 9,
-        FiveCard = 10
+        OnePair, TwoPair, Triple,
+        Straight, BackStraight, Mountain,
+        Flush, FullHouse, FourCard,
+        StraightFlush, RoyalStraightFlush,
+        FiveCard
     }
 
-    public class PlayerHand : MonoBehaviour
+    public struct HandResult
+    {
+        //결과 족보
+        public HandRank Rank;
+        //족보가 같을 경우 승패를 가르기 위한 타이브레이커
+        public List<CardRank> TieBreaker;
+        public HandResult(HandRank rank = HandRank.Top, List<CardRank> cardranks)
+        {
+            Rank = rank;
+            TieBreaker = cardranks;
+        }
+    }
+
+    //partial 클래스 사용 이유 : 족보를 판별하는 메서드들을 따로 분리하기 위해서 - 가시성 목적
+    public partial class PlayerHand : MonoBehaviour
     {
         #region Variables
-        #region hand Info
-        [SerializeField] private List<Card> hand = new List<Card>(); // 보유 카드 5장
-        private HandRank currentHandRank; // 현재 족보
-        private string handScore; // 같은 족보 비교 점수
+        #region HandData
+        //플레이어의 손패
+        [SerializeField] private List<Card> hand = new List<Card>();
+        //손패 크기
+        private const int handSize = 5;
+        //문양별 손패 정보
+        Dictionary<CardSuit, int> suitCount = new();
+        //숫자별 손패 정보
+        Dictionary<CardRank, int> rankCount = new();
+        //가능한 족보 정보
+        bool[] ranks = new bool[(int)HandRank.FiveCard + 1];
+        //빠른 평가를 위한 조커 보유 여부
+        private bool hasJoker = false;
+        //족보를 가진 카드들 - 정렬을 위해 따로 관리
+        private List<Card> rankedCards = new List<Card>();
         #endregion
-
-        #region Eval Options
-        [SerializeField] private bool includeWheel = true; // 휠(A2345) 허용
-        [SerializeField] private bool useSuitPriority = true; // 무늬 우선순위 사용
-        #endregion
-
-        #region Preprocessed
-        private bool hasJoker; // 조커 개수
-        private List<Card> realCards; // 비조커 카드 목록
-        private Dictionary<CardRank, int> rankCounts; // 랭크별 개수
-        private Dictionary<CardSuit, int> suitCount; // 무늬별 개수
-        private Dictionary<CardSuit, HashSet<CardRank>> suitRanks; // 무늬별 랭크 집합
-        #endregion
-        #endregion
-
+        //플레이어의 족보
+        private HandRank handRank = HandRank.Top;
+        //TODO : 특수 카드 리스트
+        //베팅
+        private int betting;
+        //TODO : 특수 카드 관련 변수들
+        
         #region Properties
-        public List<Card> Cards => hand; // 보유 카드 조회
-        public HandRank CurrentHandRank => currentHandRank; // 현재 족보 조회
-        public string HandScore => handScore; // 현재 점수 조회
-        public int CardCount => hand.Count; // 카드 장수 조회
+        public List<Card> Hand => hand;
+        public HandRank HandRank => handRank;
+        public int Betting { get => betting; set => betting = value; }
+        public bool HasJoker { get => hasJoker; set => hasJoker = value; }
         #endregion
 
-        #region Unity Methods
-        void Start()
+        #region Unity Event Methods
+        private void Start()
         {
-            // 핸드 초기화
+            //초기화 및 족보 받고, 평가하기 위한 준비
+            //손패 정렬 실시
         }
         #endregion
 
-        #region Custom Methods
-        #region 카드 관리
-        public void Mulligan(List<Card> toChange, CardDeck deck)
+        #region Card Methods
+        public void AddCard(Card card)
         {
-            // 선택 카드를 덱에 반납하고 교체
-            /*Linq 사용 : gameobject list를 받는 deck.ReturnCard()에 맞추기 위해
-             * card 리스트에서 card => card.gameObject로 변환한 리스트를 전달하고,
-             * 기존 리스트에서 교체할 카드 제외 후 덱에서 새 카드를 받아서 추가.
-             * 마찬가지로 gameobject 리스트에서 card 컴포넌트로 변환하여 hand에 추가.
-             * */
-            List<GameObject> gameObjects = toChange.Select((Card card) => card.gameObject).ToList();
-            hand = hand.Except(toChange).ToList();
-
-            deck.ReturnCard(gameObjects);
-
-            List<GameObject> newCards = deck.DrawCard(toChange.Count);
-            hand.AddRange(newCards.Select((GameObject go) => go.GetComponent<Card>()));
+            //
+            if(hand.Count < handSize)
+                hand.Add(card);
+            else
+            {
+                //TODO : 먼저 손패를 4장까지 줄이고 카드를 추가
+            }
         }
 
-        public void SortCards()
+        public void RemoveCard(Card card)
         {
-            // 카드 정렬 규칙 적용
+            //TODO : 먼저 해당 카드를 덱/버린 카드 더미에 반납하기
             
+            //그 후 손패에서 삭제
+            hand.Remove(card);
+        }
+
+        public void ReplaceCard(int index, Card card)
+        {
+            //내 손패의 index 위치에 있는 카드를 card로 교체
+            RemoveCard(hand[index]);
+            hand.Insert(index, card);
+        }
+
+        public void SortCard()
+        {
+            //족보를 이루기 전 : 숫자 >> 문양 순으로 정렬
+            if(handRank == HandRank.Top)
+            {
+                //조커가 제일 앞에 오도록 내림차순 정렬, 문양은 Spade가 0이므로 오름차순 정렬
+                List<Card> sortedByRank = hand.OrderByDescending(card => card.Rank).ToList();
+                hand = sortedByRank.OrderBy(card => card.Suit).ToList();
+            }
+            //족보를 이룬 후 : 족보를 이루는 카드들 >> 나머지 카드들 순으로 같은 기준으로 정렬
+            else
+            {
+                //족보를 가진 카드들 먼저 추가해서 서로 따로 정렬
+                List<Card> sortedRankHand = rankedCards.OrderByDescending(card => card.Rank).ToList();
+                sortedRankHand = sortedRankHand.OrderBy(card => card.Suit).ToList();
+                hand = hand.OrderBy(card => card.Rank).ToList();
+                hand = hand.OrderBy(card => card.Suit).ToList();
+
+                List<Card> newHand = new List<Card>();
+                foreach(Card card in sortedRankHand)
+                {
+                    newHand.Add(card);
+                }
+                foreach(Card card in hand)
+                {
+                    if(!rankedCards.Contains(card))
+                        newHand.Add(card);
+                }
+                hand = newHand;
+            }
         }
         #endregion
 
-        #region 족보 평가
-        /*public HandRank EvaluateHand()
+        void PrepareHand()
         {
-            // 전처리 실행
+            //손패를 숫자별, 문양별로 파악해놓기
+            foreach(Card card in hand)
+            {
+                CardRank rank = card.Rank;
+                CardSuit suit = card.Suit;
+
+                if (rankCount.ContainsKey(rank))
+                    rankCount[rank]++;
+                else
+                    rankCount[rank] = 1;
+
+                if (suitCount.ContainsKey(suit))
+                    suitCount[suit]++;
+                else
+                    suitCount[suit] = 1;
+            }
+        }
+        public void EvaluateHand()
+        {
+            //TODO : 손패 평가 로직 구현
+            //1. 손패 정보 정리해놓기
             PrepareHand();
+            //2. 손패 정보 기반으로 족보 판별하기
+            //2-1. 조커가 없다면?
+            if(!hasJoker)
+            {
 
-            // 상위 족보부터 판정
+            }
+            else
+            {
+                //2-2. 조커가 있다면?
+            }
 
-            // 하이카드 점수 산출
-        }*/
-
-        private void PrepareHand()
-        {
-            // 조커 개수 계산
-            
-            // 비조커 목록 생성
-
-            // 랭크별 개수 집계
+            //TODO : 특수 카드 처리하기
+            //3. 베팅 단계로 넘어가기
         }
 
-       
-        #endregion
-
-        #region Hand Evaluation Helper
-        #endregion
-
-        #region Hand Comparison
-        public bool CheckHand(PlayerHand otherHand)
+        public int CompareTo(HandResult mine, HandResult other)
         {
-            // 두 핸드 점수 비교로 승패 판정
-            return false;
+            //족보 비교
+            if(mine.Rank == other.Rank)
+            {
+                //족보가 같다면 타이브레이커 비교
+                for(int i = 0; i < mine.TieBreaker.Count; i++)
+                {
+                    CardRank myRank = mine.TieBreaker[i];
+                    CardRank otherRank = other.TieBreaker[i];
+                    if(myRank > otherRank)
+                        return 1;
+                    else if(myRank < otherRank)
+                        return -1;
+                }
+                //타이브레이커가 존재하지 않거나, 타이브레이커까지 동일하면 무승부
+                return 0;
+            }
+            if(mine.Rank > other.Rank)
+                return 1;
+            else
+                return -1;
         }
-        #endregion
+
+        void AllClear()
+        {
+            //다음 라운드를 위한 전체 초기화
+            hand.Clear();
+            suitCount.Clear();
+            rankCount.Clear();
+            ranks = new bool[(int)HandRank.FiveCard + 1];
+            hasJoker = false;
+            handRank = HandRank.Top;
+            rankedCards.Clear();
+        }
         #endregion
     }
 }
