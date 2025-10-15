@@ -22,7 +22,7 @@ namespace UnderGroundPoker.Prefab.Card
         public HandRank Rank;
         //족보가 같을 경우 승패를 가르기 위한 타이브레이커
         public List<CardRank> TieBreaker;
-        public HandResult(HandRank rank = HandRank.Top, List<CardRank> cardranks)
+        public HandResult(List<CardRank> cardranks, HandRank rank = HandRank.Top)
         {
             Rank = rank;
             TieBreaker = cardranks;
@@ -50,7 +50,7 @@ namespace UnderGroundPoker.Prefab.Card
         private List<Card> rankedCards = new List<Card>();
         #endregion
         //플레이어의 족보
-        private HandRank handRank = HandRank.Top;
+        private HandResult result = new HandResult(new List<CardRank>());
         //TODO : 특수 카드 리스트
         //베팅
         private int betting;
@@ -58,7 +58,7 @@ namespace UnderGroundPoker.Prefab.Card
         
         #region Properties
         public List<Card> Hand => hand;
-        public HandRank HandRank => handRank;
+        
         public int Betting { get => betting; set => betting = value; }
         public bool HasJoker { get => hasJoker; set => hasJoker = value; }
         #endregion
@@ -101,7 +101,7 @@ namespace UnderGroundPoker.Prefab.Card
         public void SortCard()
         {
             //족보를 이루기 전 : 숫자 >> 문양 순으로 정렬
-            if(handRank == HandRank.Top)
+            if(result.Rank == HandRank.Top)
             {
                 //조커가 제일 앞에 오도록 내림차순 정렬, 문양은 Spade가 0이므로 오름차순 정렬
                 List<Card> sortedByRank = hand.OrderByDescending(card => card.Rank).ToList();
@@ -133,8 +133,12 @@ namespace UnderGroundPoker.Prefab.Card
 
         void PrepareHand()
         {
+            //초기화
+            suitCount.Clear();
+            rankCount.Clear();
+            hasJoker = false;
             //손패를 숫자별, 문양별로 파악해놓기
-            foreach(Card card in hand)
+            foreach (Card card in hand)
             {
                 CardRank rank = card.Rank;
                 CardSuit suit = card.Suit;
@@ -159,7 +163,8 @@ namespace UnderGroundPoker.Prefab.Card
             //2-1. 조커가 없다면?
             if(!hasJoker)
             {
-
+                CheckFlush();
+                return;
             }
             else
             {
@@ -202,7 +207,7 @@ namespace UnderGroundPoker.Prefab.Card
             rankCount.Clear();
             ranks = new bool[(int)HandRank.FiveCard + 1];
             hasJoker = false;
-            handRank = HandRank.Top;
+            result = new HandResult(new List<CardRank>());
             rankedCards.Clear();
         }
         #endregion
