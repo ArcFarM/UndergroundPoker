@@ -7,7 +7,8 @@ namespace UnderGroundPoker.Prefab.Card
         Spade,
         Diamond,
         Heart,
-        Club
+        Club,
+        Joker
     }
 
     public enum CardRank

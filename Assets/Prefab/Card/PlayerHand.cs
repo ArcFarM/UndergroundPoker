@@ -43,7 +43,7 @@ namespace UnderGroundPoker.Prefab.Card
         //숫자별 손패 정보
         Dictionary<CardRank, int> rankCount = new();
         //가능한 족보 정보
-        bool[] ranks = new bool[(int)HandRank.FiveCard + 1];
+        bool[] ranks = new bool[(int)HandRank.FiveCard];
         //빠른 평가를 위한 조커 보유 여부
         private bool hasJoker = false;
         //족보를 가진 카드들 - 정렬을 위해 따로 관리
@@ -67,6 +67,8 @@ namespace UnderGroundPoker.Prefab.Card
         private void Start()
         {
             //초기화 및 족보 받고, 평가하기 위한 준비
+            AllClear();
+            ranks[(int)HandRank.Top] = true; //무조건 탑은 가능
             //손패 정렬 실시
         }
         #endregion
@@ -153,6 +155,9 @@ namespace UnderGroundPoker.Prefab.Card
                 else
                     suitCount[suit] = 1;
             }
+
+            if (rankCount.ContainsKey(CardRank.Joker))
+                hasJoker = true;
         }
         public void EvaluateHand()
         {
@@ -169,8 +174,18 @@ namespace UnderGroundPoker.Prefab.Card
             else
             {
                 //2-2. 조커가 있다면?
+                CheckJokerFlush();
             }
-
+            //2-3. 제일 높은 족보 반영
+            for (int i = ranks.Length - 1; i >= 0; i--)
+            {
+                if (ranks[i])
+                {
+                    result.Rank = (HandRank)i;
+                    Debug.Log((HandRank)i);
+                    break;
+                }
+            }
             //TODO : 특수 카드 처리하기
             //3. 베팅 단계로 넘어가기
         }
@@ -209,6 +224,61 @@ namespace UnderGroundPoker.Prefab.Card
             hasJoker = false;
             result = new HandResult(new List<CardRank>());
             rankedCards.Clear();
+        }
+        #endregion
+
+        #region Debug Methods
+        //디버그용 : 현재 손패 출력
+        public void PrintHand()
+        {
+            string handString = "현재 손패: ";
+            foreach (Card card in hand)
+            {
+                handString += $"{card.Suit}-{card.Rank} ";
+            }
+            Debug.Log(handString);
+        }
+
+        //디버그용 : 현재 족보 출력
+        public void PrintHandResult()
+        {
+            string resultString = $"현재 족보: {result.Rank}, 타이브레이커: ";
+            foreach (CardRank rank in result.TieBreaker)
+            {
+                resultString += $"{rank} ";
+            }
+            Debug.Log(resultString);
+        }
+
+        //디버그용 : 현재 문양별, 숫자별 손패 정보 출력
+        public void PrintHandInfo()
+        {
+            string suitInfo = "문양별 손패 정보: ";
+            foreach (var kvp in suitCount)
+            {
+                suitInfo += $"{kvp.Key}: {kvp.Value} ";
+            }
+            Debug.Log(suitInfo);
+            string rankInfo = "숫자별 손패 정보: ";
+            foreach (var kvp in rankCount)
+            {
+                rankInfo += $"{kvp.Key}: {kvp.Value} ";
+            }
+            Debug.Log(rankInfo);
+        }
+
+        //디버그용 : 현재 가능한 족보 정보 출력
+        public void PrintPossibleRanks()
+        {
+            string ranksInfo = "가능한 족보 정보: ";
+            for (int i = ranks.Length - 1; i >= 0; i--)
+            {
+                if (ranks[i])
+                {
+                    ranksInfo += $"{(HandRank)i} ";
+                }
+            }
+            Debug.Log(ranksInfo);
         }
         #endregion
     }
