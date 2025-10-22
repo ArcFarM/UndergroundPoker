@@ -187,6 +187,10 @@ namespace UnderGroundPoker.Prefab.Card
             DeckShuffle();
             ArrangeHeight();
         }
+
+        public Card PeekCard() {
+            return transform.GetChild(transform.childCount - 1).GetComponent<Card>();
+        }
         #endregion
 
         #region special card interaction

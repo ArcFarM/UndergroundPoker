@@ -43,7 +43,7 @@ namespace UnderGroundPoker.Prefab.Card
         //숫자별 손패 정보
         Dictionary<CardRank, int> rankCount = new();
         //가능한 족보 정보
-        bool[] ranks = new bool[(int)HandRank.FiveCard];
+        [SerializeField] bool[] ranks = new bool[(int)HandRank.FiveCard];
         //빠른 평가를 위한 조커 보유 여부
         private bool hasJoker = false;
         //족보를 가진 카드들 - 정렬을 위해 따로 관리
@@ -115,7 +115,7 @@ namespace UnderGroundPoker.Prefab.Card
                 //족보를 가진 카드들 먼저 추가해서 서로 따로 정렬
                 List<Card> sortedRankHand = rankedCards.OrderByDescending(card => card.Rank).ToList();
                 sortedRankHand = sortedRankHand.OrderBy(card => card.Suit).ToList();
-                hand = hand.OrderBy(card => card.Rank).ToList();
+                hand = hand.OrderByDescending(card => card.Rank).ToList();
                 hand = hand.OrderBy(card => card.Suit).ToList();
 
                 List<Card> newHand = new List<Card>();
@@ -169,14 +169,13 @@ namespace UnderGroundPoker.Prefab.Card
             if(!hasJoker)
             {
                 CheckFlush();
-                return;
             }
             else
             {
                 //2-2. 조커가 있다면?
                 CheckJokerFlush();
             }
-            //2-3. 제일 높은 족보 반영
+            //2-3. 제일 높은 족보 반영 및 타이브레이커 설정
             for (int i = ranks.Length - 1; i >= 0; i--)
             {
                 if (ranks[i])
@@ -186,6 +185,7 @@ namespace UnderGroundPoker.Prefab.Card
                     break;
                 }
             }
+            SetTieBreaker();
             //TODO : 특수 카드 처리하기
             //3. 베팅 단계로 넘어가기
         }

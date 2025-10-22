@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace UnderGroundPoker.Prefab.Card
@@ -14,12 +15,6 @@ namespace UnderGroundPoker.Prefab.Card
                 if (suit.Value >= 5)
                 {
                     ranks[(int)HandRank.Flush] = true;
-                    //타이브레이커 설정
-                    foreach (Card card in hand)
-                    {
-                        result.TieBreaker.Add(card.Rank);
-                    }
-                    result.TieBreaker = result.TieBreaker.OrderByDescending(rank => rank).ToList();
                     break;
                 }
             }
@@ -67,8 +62,6 @@ namespace UnderGroundPoker.Prefab.Card
                 {
                     ranks[(int)HandRank.Straight] = true;
                     ranks[(int)HandRank.BackStraight] = true;
-                    //타이브레이커 설정
-                    result.TieBreaker.Add(CardRank.Five);
                     CheckOther();
                     return;
                 }
@@ -78,8 +71,6 @@ namespace UnderGroundPoker.Prefab.Card
             {
                 ranks[(int)HandRank.Straight] = true;
                 ranks[(int)HandRank.Mountain] = true;
-                //타이브레이커 설정
-                result.TieBreaker.Add(CardRank.Ace);
                 CheckOther();
                 return;
             }
@@ -88,8 +79,6 @@ namespace UnderGroundPoker.Prefab.Card
             if (high - low == 4)
             {
                 ranks[(int)HandRank.Straight] = true;
-                //타이브레이커 설정
-                result.TieBreaker.Add((CardRank)high);
                 CheckOther();
                 return;
             }
@@ -103,9 +92,6 @@ namespace UnderGroundPoker.Prefab.Card
                 {
                     ranks[(int)HandRank.RoyalStraightFlush] = true;
                 }
-                // 타이브레이커 초기화 후 재설정
-                result.TieBreaker.Clear();
-                result.TieBreaker.Add((CardRank)high);
             }
             CheckOther();
         }
@@ -130,18 +116,6 @@ namespace UnderGroundPoker.Prefab.Card
             {
                 case 4:
                     ranks[(int)HandRank.FourCard] = true;
-                    //타이브레이커 초기화 후 설정
-                    result.TieBreaker.Clear();
-                    result.TieBreaker.Add((CardRank)high);
-                    // 키커 추가 (포카드가 아닌 나머지 1장)
-                    foreach (var rank in rankCount)
-                    {
-                        if ((int)rank.Key != high)
-                        {
-                            result.TieBreaker.Add(rank.Key);
-                            break;
-                        }
-                    }
                     break;
                 case 3:
                     ranks[(int)HandRank.Triple] = true;
@@ -149,32 +123,6 @@ namespace UnderGroundPoker.Prefab.Card
                     if (second == 2)
                     {
                         ranks[(int)HandRank.FullHouse] = true;
-                        //타이브레이커 초기화 후 설정
-                        result.TieBreaker.Clear();
-                        result.TieBreaker.Add((CardRank)high);
-                        // 페어 숫자 추가
-                        foreach (var rank in rankCount)
-                        {
-                            if (rank.Value == 2)
-                            {
-                                result.TieBreaker.Add(rank.Key);
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        //타이브레이커 초기화 후 설정
-                        result.TieBreaker.Clear();
-                        result.TieBreaker.Add((CardRank)high);
-                        // 키커 2장 추가
-                        foreach (var rank in rankCount.OrderByDescending(r => r.Key))
-                        {
-                            if ((int)rank.Key != high)
-                            {
-                                result.TieBreaker.Add(rank.Key);
-                            }
-                        }
                     }
                     break;
                 case 2:
@@ -183,48 +131,11 @@ namespace UnderGroundPoker.Prefab.Card
                     if (second == 2)
                     {
                         ranks[(int)HandRank.TwoPair] = true;
-                        //타이브레이커 초기화 후 설정
-                        result.TieBreaker.Clear();
-                        // 두 페어를 내림차순으로 추가
-                        var pairs = rankCount.Where(r => r.Value == 2).OrderByDescending(r => r.Key).ToList();
-                        result.TieBreaker.Add(pairs[0].Key);
-                        result.TieBreaker.Add(pairs[1].Key);
-                        // 키커 1장 추가
-                        foreach (var rank in rankCount)
-                        {
-                            if (rank.Value == 1)
-                            {
-                                result.TieBreaker.Add(rank.Key);
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        //타이브레이커 초기화 후 설정
-                        result.TieBreaker.Clear();
-                        result.TieBreaker.Add((CardRank)high);
-                        // 키커 3장 추가
-                        foreach (var rank in rankCount.OrderByDescending(r => r.Key))
-                        {
-                            if ((int)rank.Key != high)
-                            {
-                                result.TieBreaker.Add(rank.Key);
-                            }
-                        }
                     }
                     break;
                 //기본 탑/하이카드라서 default = 1은 필요없음
-                default:
-                    //하이카드인 경우 - 타이브레이커 초기화 후 전체 카드 내림차순 추가
-                    result.TieBreaker.Clear();
-                    foreach (var rank in rankCount.OrderByDescending(r => r.Key))
-                    {
-                        result.TieBreaker.Add(rank.Key);
-                    }
-                    break;
             }
-            
+   
         }
         #endregion
         #region Hand Evaluator - With Joker
@@ -236,13 +147,6 @@ namespace UnderGroundPoker.Prefab.Card
                 if (suit.Value >= 4)
                 {
                     ranks[(int)HandRank.Flush] = true;
-                    //타이브레이커 설정
-                    foreach (Card card in hand)
-                    {
-                        result.TieBreaker.Add(card.Rank);
-                    }
-                    //조커는 같은 족보면 무조건 이김
-                    result.TieBreaker = result.TieBreaker.OrderByDescending(rank => rank).ToList();
                     break;
                 }
             }
@@ -278,8 +182,6 @@ namespace UnderGroundPoker.Prefab.Card
             {
                 ranks[(int)HandRank.Straight] = true;
                 ranks[(int)HandRank.BackStraight] = true;
-                //타이브레이커 설정 - 조커가 포함된 패는 무조건 타이브레이커에서 승리한다.
-                result.TieBreaker.Add(CardRank.Joker);
                 CheckJokerOther();
                 return;
             }
@@ -288,8 +190,6 @@ namespace UnderGroundPoker.Prefab.Card
             {
                 ranks[(int)HandRank.Straight] = true;
                 ranks[(int)HandRank.Mountain] = true;
-                //타이브레이커 설정 - 조커가 포함된 패는 무조건 타이브레이커에서 승리한다.
-                result.TieBreaker.Add(CardRank.Joker);
                 CheckJokerOther();
                 return;
             }
@@ -297,8 +197,6 @@ namespace UnderGroundPoker.Prefab.Card
             if (high - low == 3 || high - low == 4)
             {
                 ranks[(int)HandRank.Straight] = true;
-                //타이브레이커 설정 - 조커가 포함된 패는 무조건 타이브레이커에서 승리한다.
-                result.TieBreaker.Add(CardRank.Joker);
                 CheckJokerOther();
                 return;
             }
@@ -311,9 +209,6 @@ namespace UnderGroundPoker.Prefab.Card
                 {
                     ranks[(int)HandRank.RoyalStraightFlush] = true;
                 }
-                // 타이브레이커 초기화 후 재설정
-                result.TieBreaker.Clear();
-                result.TieBreaker.Add(CardRank.Joker);
             }
             CheckJokerOther();
         }
@@ -340,36 +235,34 @@ namespace UnderGroundPoker.Prefab.Card
                 case 4:
                     ranks[(int)HandRank.FiveCard] = true;
                     ranks[(int)HandRank.FourCard] = true;
-                    //타이브레이커 초기화 후 설정
-                    result.TieBreaker.Clear();
-                    result.TieBreaker.Add(CardRank.Joker);
                     break;
                 case 3:
                     ranks[(int)HandRank.FourCard] = true;
                     ranks[(int)HandRank.FullHouse] = true;
                     ranks[(int)HandRank.Triple] = true;
-                    //타이브레이커 초기화 후 설정
-                    result.TieBreaker.Clear();
-                    result.TieBreaker.Add(CardRank.Joker);
-                    result.TieBreaker.Add((CardRank)high);
                     break;
                 case 2:
                     ranks[(int)HandRank.Triple] = true;
                     ranks[(int)HandRank.TwoPair] = true;
                     ranks[(int)HandRank.OnePair] = true;
-                    //타이브레이커 초기화 후 설정
-                    result.TieBreaker.Clear();
-                    result.TieBreaker.Add(CardRank.Joker);
-                    result.TieBreaker.Add((CardRank)high);
                     break;
                 case 1:
                     ranks[(int)HandRank.OnePair] = true;
-                    //타이브레이커 초기화 후 설정
-                    result.TieBreaker.Clear();
-                    result.TieBreaker.Add(CardRank.Joker);
-                    result.TieBreaker.Add((CardRank)high);
                     break;
             }
+        }
+
+        void SetTieBreaker() {
+            //가진 족보 중 제일 강한 것을 기준으로 타이브레이커 설정
+            //1. 손패를 정렬하고
+            SortCard();
+            //2. 손패를 중복되지 않게 리스트로 저장
+            HashSet<CardRank> tiebreakers = new HashSet<CardRank>();
+            foreach (var card in hand)
+            {
+                tiebreakers.Add(card.Rank);
+            }
+            result.TieBreaker = tiebreakers.ToList();
         }
         #endregion
     }
