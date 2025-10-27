@@ -214,7 +214,7 @@ namespace UnderGroundPoker.Prefab.Card
                 return -1;
         }
 
-        void AllClear()
+        public void AllClear()
         {
             //다음 라운드를 위한 전체 초기화
             hand.Clear();
@@ -225,6 +225,8 @@ namespace UnderGroundPoker.Prefab.Card
             result = new HandResult(new List<CardRank>());
             rankedCards.Clear();
         }
+
+        
         #endregion
 
         #region Debug Methods
