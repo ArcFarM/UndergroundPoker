@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using UnderGroundPoker.Prefab.Manager;
+using UnderGroundPoker.Objects;
 using UnityEngine;
 
 namespace UnderGroundPoker.Manager {
@@ -32,7 +35,8 @@ namespace UnderGroundPoker.Manager {
         //원활한 매니저 초기화를 위한 리스트와 인터페이스
         public List<IManagerReset> managerReset = new List<IManagerReset>();
         //각 매니저 객체들 - 각 매니저들은 Awake나 Start에서 자동으로 리스트에 추가됨
-        RoundManager roundManager;
+        [SerializeField] RoundManager roundManager;
+        [SerializeField] List<PlayerManager> players;
         #endregion
         public void InitializeSingleton() {
             //TODO : 싱글톤 초기화
@@ -42,6 +46,13 @@ namespace UnderGroundPoker.Manager {
                 manager.Initialize();
             }
         }
+        #endregion
+
+        #region GameObjects
+        //게임 내 주요 오브젝트들
+        [SerializeField] Shotgun shotgun;
+        [SerializeField] PlayerManager playerManager;
+
         #endregion
 
         #region Game Control

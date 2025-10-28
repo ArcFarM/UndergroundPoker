@@ -1,27 +1,79 @@
-﻿using UnderGroundPoker.Prefab.Card;
+﻿using UnderGroundPoker.Objects;
+using UnderGroundPoker.Prefab.Card;
 using UnityEngine;
 
 
 namespace UnderGroundPoker.Manager {
     public class RoundManager : MonoBehaviour, IManagerReset {
+
+        #region RoundInfo
+        //각 스테이지 별 한 라운드 당 생성할 총알과 지급할 아이템 = 특수 카드의 정보
+
+        class StageInfo {
+            public int[] TotalBulletCount;
+            public int[] FalseBulletCount;
+            public int[] SpecialCardCount;
+            public int maxStage;
+
+            public StageInfo(int[] totalBulletCount = null, int[] falseBulletCount = null, int[] specialCardCount = null) {
+                TotalBulletCount = totalBulletCount;
+                FalseBulletCount = falseBulletCount;
+                SpecialCardCount = specialCardCount;
+            }
+
+            public void Initialize() {
+                for(int i = 0; i < maxStage; i++) {
+                    TotalBulletCount[i] = (int)System.Enum.Parse(typeof(TotalBulletCount), "Stage" + (i + 1));
+                    FalseBulletCount[i] = (int)System.Enum.Parse(typeof(FalseBulletCount), "Stage" + (i + 1));
+                    SpecialCardCount[i] = (int)System.Enum.Parse(typeof(SpecialCardCount), "Stage" + (i + 1));
+                }
+            }
+        }
+        public enum TotalBulletCount {
+            Stage1 = 5,
+            Stage2 = 7,
+            Stage3 = 9
+        }
+
+        public enum FalseBulletCount {
+            Stage1 = 2,
+            Stage2 = 3,
+            Stage3 = 4
+        }
+        public enum SpecialCardCount {
+            Stage1 = 2,
+            Stage2 = 3,
+            Stage3 = 4
+        }
+        #endregion
+
         #region Initialization
         private void Awake() {
             //매니저 리스트에 자신 추가
             GameManager.Instance.managerReset.Add(this);
+            //게임 매니저를 통해 할당된 샷건 오브젝트 가져오기
+            //shotgun = GameManager.Instance.shotgun;
+            //스테이지 정보 초기화
+
         }
 
         //초기화 함수
         public void Initialize() {
             //TODO : 라운드 매니저 초기화
+            stageinfo = new StageInfo();
+            stageinfo.maxStage = maxStage;
+            stageinfo.Initialize();
         }
         #endregion
 
         #region Round Variables
         int roundNum = 0;
-        int maxRound = 10; //만약 라운드 수에 제한을 둔다면
+        int maxStage = 3; //만약 라운드 수에 제한을 둔다면
         //라운드 시작 시 지급 될 특수 카드 풀
         //TODO : 특수 카드 풀과 특수 카드 지급량 << 얘는 게임 매니저에서 각 플레이어의 특수 카드 풀 오브젝트에 접근하기
-        
+        Shotgun shotgun;
+        //Stage Info
+        StageInfo stageinfo;
 
         #endregion
         #region Round Methods
@@ -29,7 +81,9 @@ namespace UnderGroundPoker.Manager {
             //라운드 시작
 
             //샷건에 무작위로 총알 생성 및 장전하기
-
+            //int currStage = ****;
+            //int 
+            //shotgun.Reload(TotalBulletCount)
             //각 플레이어에게 특수 카드 지급하기
 
             //각 플레이어에게 카드 나눠주기
