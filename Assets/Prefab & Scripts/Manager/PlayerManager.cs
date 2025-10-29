@@ -1,4 +1,4 @@
-﻿using UnderGroundPoker.Manager;
+using UnderGroundPoker.Manager;
 using UnderGroundPoker.Prefab.Card;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -39,7 +39,26 @@ namespace UnderGroundPoker.Prefab.Manager {
         //플레이어 특수카드 초기화
         
         //플레이어 목숨 증가/차감 << 프로퍼티 사용
-        //플레이어 특수카드 사용 <<< 특수 카드 클래스에서 사용
+        //플레이어 특수카드 사용
+        public void UseSpecialCard(SpecialCard card)
+        {
+            //TODO : 특수카드 사용 로직
+            if(card.Equals(null))
+            {
+                Debug.LogWarning("No Special Card to use.");
+                return;
+            }
+
+            if(card.TargetPlayer)
+            {
+                card.ApplyEffect(this.gameObject);
+            }
+            else
+            {
+                //TODO : 상대 플레이어에게 효과 적용
+                //GameManager.Instance.
+            }
+        }
 
         #endregion
 

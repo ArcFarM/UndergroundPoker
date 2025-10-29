@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnderGroundPoker.Prefab.Manager;
 using UnderGroundPoker.Objects;
 using UnityEngine;
+using UnderGroundPoker.Prefab.Card;
 
 namespace UnderGroundPoker.Manager {
 
@@ -51,7 +52,7 @@ namespace UnderGroundPoker.Manager {
         #region GameObjects
         //게임 내 주요 오브젝트들
         [SerializeField] Shotgun shotgun;
-        [SerializeField] PlayerManager playerManager;
+        [SerializeField] CardDeck carddeck;
 
         #endregion
 
