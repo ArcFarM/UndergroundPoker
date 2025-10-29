@@ -12,6 +12,7 @@ namespace UnderGroundPoker.Animation
         [Header("참조")]
         [SerializeField] private Transform firePoint;
         [SerializeField] private Rigidbody hangingLamp;
+        [SerializeField] private ParticleSystem spark;
 
         private float impactForce = 10;
         #endregion
@@ -33,6 +34,12 @@ namespace UnderGroundPoker.Animation
         public void EjectShell()
         {
 
+        }
+
+        public void OverDrive()
+        {
+            spark.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            spark.Play();
         }
         #endregion
     }

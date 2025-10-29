@@ -14,7 +14,6 @@ namespace UnderGroundPoker.Manager
         //참조
         [SerializeField] private Animator aBuckShot;
         [SerializeField] private Transform rotatePart;
-        
 
         //수치값
         [SerializeField] private float rotateDuration = 3f;
