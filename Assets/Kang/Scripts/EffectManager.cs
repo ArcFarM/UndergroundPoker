@@ -1,20 +1,30 @@
 using UnityEngine;
 using UnderGroundPoker.Animation;
 using System.Collections;
+using UnderGroundPoker.Utility;
 
 namespace UnderGroundPoker.Manager
 {
-    public class EffectManager : MonoBehaviour
+    public class EffectManager : Singleton<EffectManager>
     {
         #region Variables
-        [Header("ÂüÁ¶")]
-        [SerializeField] private Animator aBuckShot;
-        [SerializeField] private Transform rotatePart;
+        
 
         [Header("Buckshot Machine")]
+        //ì°¸ì¡°
+        [SerializeField] private Animator aBuckShot;
+        [SerializeField] private Transform rotatePart;
+        
+
+        //ìˆ˜ì¹˜ê°’
         [SerializeField] private float rotateDuration = 3f;
 
+        //í”Œë˜ê·¸
         private bool targetFixed = true;
+        #endregion
+
+        #region Property
+        public bool IsDoubled { get; private set; }
         #endregion
 
         #region Unity Event Method
@@ -26,7 +36,7 @@ namespace UnderGroundPoker.Manager
         {
             if (!targetFixed) return;
             targetFixed = false;
-            //¾Ö´Ï¸ŞÀÌÅÍ¸¦ ²À ²¨Áà¾ßµÊ!!
+            //ì• ë‹ˆë©”ì´í„°ë¥¼ ê¼­ êº¼ì¤˜ì•¼ë¨!!
             aBuckShot.enabled = false;
             StartCoroutine(TurnAround(false));
         }
@@ -41,10 +51,10 @@ namespace UnderGroundPoker.Manager
 
         private IEnumerator TurnAround(bool towardEnemy)
         {
-            Debug.Log("ÄÚ·çÆ¾ ½ÇÇàµÊ");
+            Debug.Log("ì½”ë£¨í‹´ ì‹¤í–‰ë¨");
 
             Vector3 startRot = rotatePart.localEulerAngles;
-            // ¸ñÇ¥ È¸Àü°ª (Y¸¸ º¯°æ)
+            // ëª©í‘œ íšŒì „ê°’ (Yë§Œ ë³€ê²½)
             Vector3 targetRot = new Vector3(startRot.x, towardEnemy ? 90f : -90f, startRot.z);
 
             float tValue = 0f;
@@ -62,6 +72,19 @@ namespace UnderGroundPoker.Manager
             rotatePart.localEulerAngles = targetRot;
             targetFixed = true;
             aBuckShot.enabled = true;
+        }
+
+        public void ResetBuckshotMachine()
+        {
+            rotatePart.localEulerAngles = Vector3.zero;
+        }
+
+
+        // ê²©ë°œ ì´ë²¤íŠ¸ ë°œìƒì‹œ í˜¸ì¶œ
+        public void PullTrigger(bool doubled = false)
+        {
+            IsDoubled = doubled;
+            aBuckShot.SetTrigger(doubled ? AnimHash.doubleFire : AnimHash.singleFire);
         }
         #endregion
     }
