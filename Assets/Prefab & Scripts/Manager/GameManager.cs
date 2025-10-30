@@ -52,7 +52,9 @@ namespace UnderGroundPoker.Manager {
         #region GameObjects
         //게임 내 주요 오브젝트들
         [SerializeField] Shotgun shotgun;
+        public Shotgun Shotgun { get { return shotgun; } }
         [SerializeField] CardDeck carddeck;
+        public CardDeck Carddeck { get { return carddeck; } }
 
         #endregion
 

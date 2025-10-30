@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
+using UnderGroundPoker.Manager;
 using UnityEngine;
 
 namespace UnderGroundPoker.Prefab.Card
@@ -87,10 +88,12 @@ namespace UnderGroundPoker.Prefab.Card
 
         public void RemoveCard(Card card)
         {
-            //TODO : 먼저 해당 카드를 덱/버린 카드 더미에 반납하기
-            
+            //해당 카드를 덱/버린 카드 더미에 반납하기
+            List<GameObject> cards = new List<GameObject> { card.gameObject };
+            GameManager.Instance.Carddeck.ReturnCard(cards);
             //그 후 손패에서 삭제
             hand.Remove(card);
+            cards.Clear();
         }
 
         public void ReplaceCard(int index, Card card)

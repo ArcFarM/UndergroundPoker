@@ -1,9 +1,10 @@
+using UnderGroundPoker.Prefab.Manager;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace UnderGroundPoker.Prefab.Card {
     //특수 카드 클래스
-    public abstract class SpecialCard {
+    public abstract class SpecialCard : MonoBehaviour {
         //다른 특수카드들의 모태가 되는 원판 : 상속 전용 클래스
 
         //특수 카드 공통 속성 : 이름, 설명, 아이콘 - 카드 프리팹, 효과 등
@@ -22,7 +23,7 @@ namespace UnderGroundPoker.Prefab.Card {
             Debug.Log($"Card Name: {CardName}\nDescription: {Description}");
         }
 
-        public abstract void ApplyEffect(GameObject player);
+        public abstract void ApplyEffect(PlayerManager player);
         //매개변수 player : 카드 효과를 받을 대상
 
     }

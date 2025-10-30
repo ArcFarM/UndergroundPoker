@@ -25,6 +25,7 @@ namespace UnderGroundPoker.Prefab.Manager {
         public bool IsUser => isUser;
         //player hand
         PlayerHand playerHand;
+        public PlayerHand PlayerHand => playerHand;
         #endregion
 
         #region player life
@@ -51,7 +52,7 @@ namespace UnderGroundPoker.Prefab.Manager {
 
             if(card.TargetPlayer)
             {
-                card.ApplyEffect(this.gameObject);
+                card.ApplyEffect(this);
             }
             else
             {
