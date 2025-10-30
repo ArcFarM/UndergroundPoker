@@ -21,7 +21,6 @@ namespace UnderGroundPoker.Prefab.Card
                 //정보 갱신 및 TODO : UI나 연출 등을 통해서 플레이어에게 알림
                 shotgun.RefreshMag();
             }
-
         }
     }
 }
