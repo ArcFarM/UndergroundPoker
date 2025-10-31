@@ -1,4 +1,4 @@
-﻿using UnderGroundPoker.Objects;
+using UnderGroundPoker.Objects;
 using UnderGroundPoker.Prefab.Card;
 using UnityEngine;
 
@@ -52,9 +52,9 @@ namespace UnderGroundPoker.Manager {
             //매니저 리스트에 자신 추가
             GameManager.Instance.managerReset.Add(this);
             //게임 매니저를 통해 할당된 샷건 오브젝트 가져오기
-            //shotgun = GameManager.Instance.shotgun;
+            shotgun = GameManager.Instance.Shotgun;
             //스테이지 정보 초기화
-
+            Initialize();
         }
 
         //초기화 함수

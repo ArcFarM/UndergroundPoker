@@ -1,11 +1,20 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UnderGroundPoker.Prefab.Card
 {
     public class CardDeck : MonoBehaviour
     {
+        /*
+         
+        카드덱 리팩토링 방안
+        1. 오브젝트를 직접 주는게 아니라, 활성/비활성화 시키고 그 복사본을 지급
+        2. SCardInfo처럼 일반 카드도 CardInfo 역할을 하는 Card 속성이 있으니까 그걸로 관리하면 됨
+        3. TODO : 반환 시 어떻게 빠르게 하냐 <<< 배열 또는 딕셔너리처럼 O(1)로 접근 가능한 자료구조 사용
+        4. TODO : 게임오브젝트 반환 대신에 카드 속성만 반환하고, 오브젝트 복사본은 카드 속성을 사용하는 다른 메서드에서 생성하는건? 생각해보기
 
+         
+         */
         /*카드 덱이 구현해야 할 기능
 
         2. 카드 나눠주기
