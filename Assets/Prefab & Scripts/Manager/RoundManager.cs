@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using UnderGroundPoker.Objects;
 using UnderGroundPoker.Prefab.Card;
+using UnderGroundPoker.Prefab.Manager;
 using UnityEngine;
 
 
@@ -48,6 +50,7 @@ namespace UnderGroundPoker.Manager {
         #endregion
 
         #region Initialization
+        List<PlayerManager> players;
         private void Awake() {
             //매니저 리스트에 자신 추가
             GameManager.Instance.managerReset.Add(this);
@@ -63,6 +66,38 @@ namespace UnderGroundPoker.Manager {
             stageinfo = new StageInfo();
             stageinfo.maxStage = maxStage;
             stageinfo.Initialize();
+
+            players = GameManager.Instance.Players;
+        }
+        #endregion
+
+        #region Betting Variables & Methods
+        //베팅 관련 메서드들
+
+        //최대로 베팅할 수 있는 양
+        int betLimit = 0;
+        //각 플레이어들의 베팅 현황
+        List<int> playerBets = new List<int>();
+        public int BetLimit {
+            get { return betLimit; }
+            private set { betLimit = value; }
+        }
+
+        void GetLimit()
+        {
+            int result = 0;
+            int remainBullet = shotgun.Bulletinfo.Count;
+
+            result = Mathf.CeilToInt(remainBullet / 2.0f);
+            BetLimit = result;
+        }
+
+        void GetPlayerBets()
+        {
+            for(int i = 0; i < players.Count; i++)
+            {
+                playerBets.Add(players[i].CurrentBet);
+            }
         }
         #endregion
 
@@ -81,27 +116,46 @@ namespace UnderGroundPoker.Manager {
             //라운드 시작
 
             //샷건에 무작위로 총알 생성 및 장전하기
-            //int currStage = ****;
-            //int 
-            //shotgun.Reload(TotalBulletCount)
+            int currStage = 0;
+            currStage = Mathf.Clamp(currStage, 1, maxStage);
+            
+            int tBulletCount = stageinfo.TotalBulletCount[currStage - 1];
+            int fBulletCount = stageinfo.FalseBulletCount[currStage - 1];
+            shotgun.Reload(tBulletCount, fBulletCount);
             //각 플레이어에게 특수 카드 지급하기
-
+            int sCardCount = stageinfo.SpecialCardCount[currStage - 1];
             //각 플레이어에게 카드 나눠주기
+            foreach(PlayerManager player in players) {
+                player.SpecialHand.AddSpecialCard(sCardCount);
+            }
+
         }
 
         public void RoundEnd() {
             //라운드 종료 처리
 
             //양 측의 패를 비교해서 승패 결정
-
+            int gameResult = 0; //0:무승부, 1:플레이어 승리, 2:적 승리
+            gameResult = players[0].PlayerHand.CompareTo(players[0].PlayerHand.Result, players[1].PlayerHand.Result);
             //승자/패자 처리 - 승자가 베팅한 만큼 발사하기
-
+            if(gameResult == 1) {
+                for(int i = 0 ; i < players[0].CurrentBet; i++)
+                {
+                    //TODO : 플레이어가 베팅한 수 만큼 누구에게 발사할 건지 결정 후 발사
+                }
+            }
+            else {
+                //TODO : 적이 승리한 경우 적의 베팅 만큼 누구에게 발사할 건지 결정 후 발사
+            }
             //라운드 수 증가
-
+            roundNum++;
             //카드 패 회수하고 덱 섞기
-
+            
             //총알을 모두 소비했다면 새 라운드 시작하기
-
+            if(shotgun.Bulletinfo.Count == 0)
+            {
+                Prepare();
+            }
             //어느 한 플레이어가 죽었다면 다음 스테이지 시작하기 (현재는 1스테이지 기획이므로 바로 게임 엔딩)
         }
 

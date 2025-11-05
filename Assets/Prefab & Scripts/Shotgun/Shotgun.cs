@@ -23,13 +23,8 @@ namespace UnderGroundPoker.Objects {
 
         public void Initialize() {
             if (mag == null)
-                mag = new List<Bullet>(magsize);
-            else {
-                mag.Clear();
-                for(int i = 0; i < magsize; i++) {
-                    mag.Add(null);
-                }
-            }
+                mag = new List<Bullet>();
+            else mag.Clear();
         }
 
         #region Bullet Info Methods
@@ -38,6 +33,12 @@ namespace UnderGroundPoker.Objects {
         {
             RealBulletCount = 0;
             FalseBulletCount = 0;
+            if (mag == null)
+            {
+                Initialize();
+                return;
+            }
+
             foreach (var bullet in mag)
             {
                 if (bullet != null)
@@ -64,17 +65,11 @@ namespace UnderGroundPoker.Objects {
             //정해진 수 만큼 가짜 총알/ 진짜 총알 생성해서 배열에 저장
             for (int i = 0; i < totalNum; i++)
             {
-                mag[i] = new Bullet();
-
-                if (falseCount < falseNum)
-                {
-                    mag[i].isFalse = true;
-                    falseCount++;
-                }
-                else
-                {
-                    mag[i].isFalse = false;
-                }
+                //두 개의 if문을 하나로 통합하고, Add로 대체 - 탄창초기화 메서드에서 리스트 초기화만 함
+                Bullet newBullet = new Bullet();
+                newBullet.isFalse = falseCount < falseNum;
+                if (newBullet.isFalse) falseCount++;
+                mag.Add(newBullet);
             }
 
             //배열 무작위로 섞기 - Fisher–Yates 알고리즘 사용 (배열의 마지막 자리부터 1 ~ index 번째 위치한 파일 중 무작위로 선택된 것과 치환하는 방법)
@@ -90,6 +85,16 @@ namespace UnderGroundPoker.Objects {
         //매개변수로 받는 플레이어에게 총알 발사
         public void Fire(PlayerManager player)
         {
+            if(player == null)
+            {
+                return;
+            }
+
+            if(mag == null)
+            {
+                return;
+            }
+
             //총알을 꺼낼 수 있으면 리스트의 0번 총알 꺼내고 리스트에서 제거
             if (mag.Count == 0)
             {
@@ -108,6 +113,9 @@ namespace UnderGroundPoker.Objects {
                 }
                 else player.PlayerLife--;
             }
+
+            //발사 후 남은 총알 정보 갱신
+            RefreshMag();
         }
         #endregion
     }

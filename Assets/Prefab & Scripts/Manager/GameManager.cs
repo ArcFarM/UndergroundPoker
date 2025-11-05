@@ -37,7 +37,9 @@ namespace UnderGroundPoker.Manager {
         public List<IManagerReset> managerReset = new List<IManagerReset>();
         //각 매니저 객체들 - 각 매니저들은 Awake나 Start에서 자동으로 리스트에 추가됨
         [SerializeField] RoundManager roundManager;
+        public RoundManager RoundManager { get { return roundManager; } }
         [SerializeField] List<PlayerManager> players;
+        public List<PlayerManager> Players { get { return players; } }
         #endregion
         public void InitializeSingleton() {
             //TODO : 싱글톤 초기화

@@ -10,9 +10,11 @@ namespace UnderGroundPoker.Prefab.Manager {
         #region player variables
         //플레이어 목숨(칩)
         int playerLife;
-        [SerializeField] int initialLife = 10;
-        [SerializeField] int maxLife = 10;
+        [SerializeField] int initialLife = 5;
+        [SerializeField] int maxLife = 5;
         [SerializeField] int currentBet = 0;
+        public int CurrentBet => currentBet;
+        [SerializeField] int maxBet = 0;
         //플레이어 목숨 프로퍼티
         public int PlayerLife {
             get { return playerLife; }
@@ -26,6 +28,8 @@ namespace UnderGroundPoker.Prefab.Manager {
         //player hand
         PlayerHand playerHand;
         public PlayerHand PlayerHand => playerHand;
+        SCardDeck specialHand;
+        public SCardDeck SpecialHand => specialHand;    
         #endregion
 
         #region player life
@@ -72,6 +76,16 @@ namespace UnderGroundPoker.Prefab.Manager {
             InitPlayerLife();
             playerHand = GetComponent<PlayerHand>();
             InitPlayerHand();
+        }
+
+        //라운드 매니저를 통해 최대 한도를 얻고 베팅하기
+        public void Bet()
+        {
+            int maxBet = GameManager.Instance.RoundManager.BetLimit;
+            //TODO : UI를 통해 베팅 설정하기
+            currentBet = Mathf.Clamp(currentBet, 1, maxBet); //최소 1의 베팅을 해야 함
+
+            //이제 Roundmanager에서 플레이어의 베팅 금액을 확인하여 저장
         }
     }
 

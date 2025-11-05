@@ -52,14 +52,13 @@ namespace UnderGroundPoker.Prefab.Card
         #endregion
         //플레이어의 족보
         private HandResult result = new HandResult(new List<CardRank>());
-        //TODO : 특수 카드 리스트
         //베팅
         private int betting;
-        //TODO : 특수 카드 관련 변수들
         
         #region Properties
         public List<Card> Hand => hand;
-        
+        public HandResult Result { get => result; }
+
         public int Betting { get => betting; set => betting = value; }
         public bool HasJoker { get => hasJoker; set => hasJoker = value; }
         #endregion
