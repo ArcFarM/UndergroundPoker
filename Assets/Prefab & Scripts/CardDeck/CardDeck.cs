@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -39,7 +40,12 @@ namespace UnderGroundPoker.Prefab.Card
 
         public GameObject defaultDeck; //기본 덱
         public GameObject currDeck; //현재 덱
-        public GameObject beforeLastModify; //마지막 수정 이전 상태
+
+        //덱에 어떤 카드가 남아있는 지 확인용
+
+        Dictionary<(CardSuit, CardRank), Card> startDeckInfo;
+        Dictionary<(CardSuit, CardRank), Card> currDeckInfo;
+
         #endregion
 
         #region Properties
@@ -54,6 +60,23 @@ namespace UnderGroundPoker.Prefab.Card
         void Start()
         {
             DeckShuffle();
+            ArrangeHeight();
+            FillCardInfo();
+        }
+
+        void FillCardInfo()
+        {
+            for(int i = 0; i < defaultDeck.transform.childCount; i++)
+            {
+                Card card = defaultDeck.transform.GetChild(i).GetComponent<Card>();
+                var key = (card.Suit, card.Rank);
+                if (startDeckInfo.ContainsKey(key) == false)
+                {
+                    startDeckInfo[key] = card;
+                }
+            }
+
+
         }
 
         // Update is called once per frame
@@ -88,7 +111,7 @@ namespace UnderGroundPoker.Prefab.Card
             //무작위 인덱스로 재설정 및 높이도 재설정
             for (int i = 0; i < count * 5; i++)
             {
-                int rnd = Random.Range(0, count);
+                int rnd = UnityEngine.Random.Range(0, count);
                 int idx = i % count;
                 GameObject toChange = cards[idx];
                 GameObject changeWith = cards[rnd];
@@ -107,12 +130,24 @@ namespace UnderGroundPoker.Prefab.Card
 
         public void ArrangeHeight()
         {
-            //덱 높이를 재조정
+            //덱 높이 재조정
             int count = transform.childCount;
+            int activeCount = 0;
             for (int i = 0; i < count; i++)
             {
                 Transform card = transform.GetChild(i);
-                card.localPosition = new Vector3(0, 0, i * cardHeight / baseHeight);
+                if (card.gameObject.activeSelf) activeCount++;
+            }
+            
+            float deckHeight = activeCount * cardHeight;
+            for (int i = 0; i < count; i++)
+            {
+                Transform card = transform.GetChild(i);
+                if (card.gameObject.activeSelf)
+                {
+                    card.localPosition = new Vector3(0, 0, activeCount * cardHeight / baseHeight);
+                    activeCount--;
+                }
             }
         }
 
@@ -125,8 +160,8 @@ namespace UnderGroundPoker.Prefab.Card
                 if (transform.childCount > 0)
                 {
                     Transform topCard = transform.GetChild(transform.childCount - 1);
-                    cards.Add(topCard.gameObject);
-                    topCard.SetParent(null);
+                    cards.Add(Instantiate(topCard.gameObject, topCard.gameObject.transform));
+                    topCard.gameObject.SetActive(false);
                     //TODO : 카드 뽑기 애니메이션 수행
                     /*
                         대상 플레이어 방향으로 이동 및 회전
@@ -142,21 +177,18 @@ namespace UnderGroundPoker.Prefab.Card
         public void ReturnCard(List<GameObject> cards)
         {
             //카드 덱에 카드 반납
-            int count = transform.childCount;
-            for(int i = 0; i < cards.Count; i++)
+            foreach(var card in cards)
             {
+                if(card == null || card.TryGetComponent<Card>(out Card c) == false)
+                {
+                    continue;
+                } else
+                {
+                    CardRank cr = c.Rank;
+                    CardSuit cs = c.Suit;
 
-                GameObject card = cards[i];
-                //널 체크 및 중복 검사
-                if (card == null || card.transform.parent == transform) continue;
-
-                card.transform.SetParent(transform);
-                card.transform.localPosition = new Vector3(0, 0, count * cardHeight / baseHeight);
-                card.transform.localRotation = Quaternion.Euler(0, 0, 0);
-                //TODO : 카드 반납 애니메이션 수행
-                /*
-                    대상 카드 덱 방향으로 이동 및 회전
-                    */
+                    cardInfo[(int)cs, (int)cr] += 1;
+                }
             }
             //카드 다 반납하고 높이 재조정
             ArrangeHeight();
