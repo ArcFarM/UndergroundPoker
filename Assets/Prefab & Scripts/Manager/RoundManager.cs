@@ -112,7 +112,7 @@ namespace UnderGroundPoker.Manager {
 
         #endregion
         #region Round Methods
-        public void RoundStart(int num) {
+        public void RoundStart() {
             //라운드 시작
 
             //샷건에 무작위로 총알 생성 및 장전하기
@@ -150,11 +150,13 @@ namespace UnderGroundPoker.Manager {
             //라운드 수 증가
             roundNum++;
             //카드 패 회수하고 덱 섞기
-            
+            players[0].InitPlayerHand();
+            players[1].InitPlayerHand();
+            GameManager.Instance.Carddeck.DeckReset();
             //총알을 모두 소비했다면 새 라운드 시작하기
-            if(shotgun.Bulletinfo.Count == 0)
+            if (shotgun.Bulletinfo.Count == 0)
             {
-                Prepare();
+                RoundStart();
             }
             //어느 한 플레이어가 죽었다면 다음 스테이지 시작하기 (현재는 1스테이지 기획이므로 바로 게임 엔딩)
         }
@@ -164,39 +166,6 @@ namespace UnderGroundPoker.Manager {
 
             
         }
-
-
-        #endregion
-
-        #region Phase Setting
-        //각 라운드의 단계 = 페이즈 설정
-        public enum RoundPhase {
-
-        }
-
-        //각 단계 관리
-        public void PhaseControl(RoundPhase phase) {
-            switch (phase) {
-                //TODO : 각 페이즈에 따른 처리
-            }
-        }
-
-        //각 페이즈 진입/종료 시 실시할 함수
-        public void OnPhaseEnter(RoundPhase phase) {
-            switch (phase) {
-                //TODO : 각 페이즈 진입 시 처리
-            }
-        }
-
-        public void OnPhaseExit(RoundPhase phase) {
-            switch (phase) {
-                //TODO : 각 페이즈 종료 시 처리
-            }
-        }
-
-        #region Phase Methods
-        //TODO : OnPhaseEnter/Exit에서 사용할 각 페이즈별 함수들
-        #endregion
 
 
         #endregion

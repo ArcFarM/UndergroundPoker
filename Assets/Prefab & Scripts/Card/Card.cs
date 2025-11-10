@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace UnderGroundPoker.Prefab.Card
 {
@@ -37,8 +37,6 @@ namespace UnderGroundPoker.Prefab.Card
         [SerializeField] private CardRank rank;
         //카드 선택 여부
         [SerializeField] private bool isSelected;
-        //참고할 카드 프리팹
-        [SerializeField] private GameObject cardPrefab;
         //카드 뒤집기 함수 용
         bool isFront;
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnderGroundPoker.Manager;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -212,20 +213,17 @@ namespace UnderGroundPoker.Prefab.Card
         public void DeckReset()
         {
             //덱 리셋
-            //버린 카드들을 모두 덱에 반납하고 덱 섞기
-            ReturnCard(graveyard);
-            graveyard.Clear();
-            DeckShuffle();
-            ArrangeHeight();
-        }
-
-        public void TrueDeckReset()
-        {
-            //제외된 카드들까지 모두 한꺼번에 덱에 반납하고 덱 섞기
-            ReturnCard(graveyard);
-            graveyard.Clear();
-            ReturnCard(removedCard);
-            removedCard.Clear();
+            foreach(var player in GameManager.Instance.Players)
+            {
+                if(player.TryGetComponent<PlayerHand>(out PlayerHand hand)) {
+                    List<Card> playerCards = hand.Hand;
+                    foreach(var card in playerCards)
+                    {
+                        ReturnCard(new List<GameObject> { card.gameObject });
+                    }
+                    hand.AllClear();
+                }
+            }
             DeckShuffle();
             ArrangeHeight();
         }
