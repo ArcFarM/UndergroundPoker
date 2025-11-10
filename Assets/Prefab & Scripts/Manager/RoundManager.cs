@@ -24,7 +24,15 @@ namespace UnderGroundPoker.Manager {
             }
 
             public void Initialize() {
-                for(int i = 0; i < maxStage; i++) {
+
+                if(TotalBulletCount == null)
+                    TotalBulletCount = new int[maxStage];
+                if(FalseBulletCount == null)
+                    FalseBulletCount = new int[maxStage];
+                if(SpecialCardCount == null)
+                    SpecialCardCount = new int[maxStage];
+
+                for (int i = 0; i < maxStage; i++) {
                     TotalBulletCount[i] = (int)System.Enum.Parse(typeof(TotalBulletCount), "Stage" + (i + 1));
                     FalseBulletCount[i] = (int)System.Enum.Parse(typeof(FalseBulletCount), "Stage" + (i + 1));
                     SpecialCardCount[i] = (int)System.Enum.Parse(typeof(SpecialCardCount), "Stage" + (i + 1));
@@ -115,6 +123,10 @@ namespace UnderGroundPoker.Manager {
         public void RoundStart() {
             //라운드 시작
 
+            //베팅 초기화 하기
+            GetLimit();
+
+
             //샷건에 무작위로 총알 생성 및 장전하기
             int currStage = 0;
             currStage = Mathf.Clamp(currStage, 1, maxStage);
@@ -138,14 +150,19 @@ namespace UnderGroundPoker.Manager {
             int gameResult = 0; //0:무승부, 1:플레이어 승리, 2:적 승리
             gameResult = players[0].PlayerHand.CompareTo(players[0].PlayerHand.Result, players[1].PlayerHand.Result);
             //승자/패자 처리 - 승자가 베팅한 만큼 발사하기
-            if(gameResult == 1) {
-                for(int i = 0 ; i < players[0].CurrentBet; i++)
+            GetPlayerBets();
+
+            if (gameResult == 1) {
+                for(int i = 0 ; i < playerBets[0]; i++)
                 {
                     //TODO : 플레이어가 베팅한 수 만큼 누구에게 발사할 건지 결정 후 발사
                 }
             }
             else {
-                //TODO : 적이 승리한 경우 적의 베팅 만큼 누구에게 발사할 건지 결정 후 발사
+                for(int i = 0 ; i < playerBets[1]; i++)
+                {
+                    //TODO : 적이 베팅한 수 만큼 누구에게 발사할 건지 결정 후 발사
+                }
             }
             //라운드 수 증가
             roundNum++;
@@ -156,18 +173,11 @@ namespace UnderGroundPoker.Manager {
             //총알을 모두 소비했다면 새 라운드 시작하기
             if (shotgun.Bulletinfo.Count == 0)
             {
+                //TODO : 라운드 종료 애니메이션 및 연출
                 RoundStart();
             }
             //어느 한 플레이어가 죽었다면 다음 스테이지 시작하기 (현재는 1스테이지 기획이므로 바로 게임 엔딩)
         }
-
-        public void Prepare() {
-            //다음 라운드 준비
-
-            
-        }
-
-
         #endregion
     }
 }
