@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UnderGroundPoker.Prefab.Card
 {
-    //게임 진행에서 사용할 특수 카드 덱
+    //게임 진행에서 사용할 특수 카드 덱 (아이템 인벤토리)
     public class SCardDeck : MonoBehaviour
     {
         #region Variables

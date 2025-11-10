@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace UnderGroundPoker.Prefab.Card
@@ -155,19 +156,23 @@ namespace UnderGroundPoker.Prefab.Card
         {
             //덱 맨 위에서 카드 n장 뽑기 (안되면 가능한 만큼)
             List<GameObject> cards = new List<GameObject>();
-            for (int i = 0; i < n; i++)
+
+            int index = 0;
+            while(cards.Count < n && index < transform.childCount)
             {
-                if (transform.childCount > 0)
+                GameObject topCard = transform.GetChild(index).gameObject;
+                if (topCard.activeSelf)
                 {
-                    Transform topCard = transform.GetChild(transform.childCount - 1);
-                    cards.Add(Instantiate(topCard.gameObject, topCard.gameObject.transform));
-                    topCard.gameObject.SetActive(false);
-                    //TODO : 카드 뽑기 애니메이션 수행
-                    /*
-                        대상 플레이어 방향으로 이동 및 회전
-                        */
+                    cards.Add(topCard);
+                    topCard.SetActive(false);
                 }
+                else continue;
+
+                index++;
             }
+
+            //뽑을 카드가 모자라면 null 반환
+            if (cards.Count < n) return null;
 
             //카드 다 뽑고 높이 재조정
             ArrangeHeight();
@@ -184,10 +189,7 @@ namespace UnderGroundPoker.Prefab.Card
                     continue;
                 } else
                 {
-                    CardRank cr = c.Rank;
-                    CardSuit cs = c.Suit;
-
-                    cardInfo[(int)cs, (int)cr] += 1;
+                    currDeckInfo[(c.Suit, c.Rank)].gameObject.SetActive(true);
                 }
             }
             //카드 다 반납하고 높이 재조정
