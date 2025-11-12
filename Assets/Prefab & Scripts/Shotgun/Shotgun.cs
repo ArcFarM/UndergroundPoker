@@ -66,10 +66,12 @@ namespace UnderGroundPoker.Objects {
             for (int i = 0; i < totalNum; i++)
             {
                 //두 개의 if문을 하나로 통합하고, Add로 대체 - 탄창초기화 메서드에서 리스트 초기화만 함
-                Bullet newBullet = new Bullet();
+                GameObject go = new GameObject();
+                Bullet newBullet = go.AddComponent<Bullet>();
                 newBullet.isFalse = falseCount < falseNum;
                 if (newBullet.isFalse) falseCount++;
                 mag.Add(newBullet);
+                
             }
 
             //배열 무작위로 섞기 - Fisher–Yates 알고리즘 사용 (배열의 마지막 자리부터 1 ~ index 번째 위치한 파일 중 무작위로 선택된 것과 치환하는 방법)
@@ -79,6 +81,15 @@ namespace UnderGroundPoker.Objects {
                 Bullet temp = mag[i];
                 mag[i] = mag[j];
                 mag[j] = temp;
+            }
+
+            //하이어라키 내 가시성을 위해 오브젝트 이름 지정 및 부모 오브젝트 설정
+            int fbcount = 1;
+            int rbcount = 1;    
+            for (int i = 0;  i < mag.Count; i++)
+            {
+                mag[i].gameObject.transform.parent = this.transform;
+                mag[i].gameObject.name = mag[i].isFalse ? "FBullet" + fbcount++ : "RBullet" + rbcount++;
             }
         }
 
@@ -103,6 +114,7 @@ namespace UnderGroundPoker.Objects {
             }
             Bullet bullet = mag[0];
             mag.RemoveAt(0);
+            bullet.gameObject.SetActive(false);
 
             //총알이 진짜라면 총알의 강화 여부를 확인하고 피해
             if (!bullet.isFalse)
@@ -115,6 +127,7 @@ namespace UnderGroundPoker.Objects {
             }
 
             //발사 후 남은 총알 정보 갱신
+            Destroy(bullet.gameObject);
             RefreshMag();
         }
         #endregion

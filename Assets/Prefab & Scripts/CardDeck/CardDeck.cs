@@ -68,11 +68,28 @@ namespace UnderGroundPoker.Prefab.Card
 
         void FillCardInfo()
         {
-            for(int i = 0; i < defaultDeck.transform.childCount; i++)
+            //null check
+            if(defaultDeck == null)
+            {
+                Debug.LogError("Default Deck is not assigned.");
+                return;
+            }
+
+            if(startDeckInfo == null)
+            {
+                startDeckInfo = new Dictionary<(CardSuit, CardRank), Card>();
+            }
+
+            if(currDeckInfo == null)
+            {
+                currDeckInfo = new Dictionary<(CardSuit, CardRank), Card>();
+            }
+
+            for (int i = 0; i < defaultDeck.transform.childCount; i++)
             {
                 Card card = defaultDeck.transform.GetChild(i).GetComponent<Card>();
                 var key = (card.Suit, card.Rank);
-                if (startDeckInfo.ContainsKey(key) == false)
+                if (!startDeckInfo.ContainsKey(key))
                 {
                     startDeckInfo[key] = card;
                 }
@@ -197,17 +214,15 @@ namespace UnderGroundPoker.Prefab.Card
             ArrangeHeight();
         }
 
-        public void DiscardCard(List<GameObject> cards, List<GameObject> destination)
+        public GameObject SearchCard(CardSuit suit, CardRank rank)
         {
-            foreach (GameObject card in cards)
+            //덱에서 특정 카드 찾기
+            if(currDeckInfo.TryGetValue((suit, rank), out Card card))
             {
-                card.transform.SetParent(null);
-                //TODO : 카드 버리기 애니메이션 수행
-                /*
-                    대상 카드 더미 방향으로 이동 및 회전
-                    */
-                destination.Add(card);
+                GameObject result = Instantiate(card.gameObject);
+                return result;
             }
+            return null;
         }
 
         public void DeckReset()

@@ -26,10 +26,10 @@ namespace UnderGroundPoker.Prefab.Manager {
         [SerializeField] bool isUser = true;
         public bool IsUser => isUser;
         //player hand
-        PlayerHand playerHand;
+        [SerializeField]PlayerHand playerHand;
         public PlayerHand PlayerHand => playerHand;
-        SCardDeck specialHand;
-        public SCardDeck SpecialHand => specialHand;    
+        [SerializeField]SCardHand specialHand;
+        public SCardHand SpecialHand => specialHand;    
         #endregion
 
         #region player life
@@ -68,7 +68,7 @@ namespace UnderGroundPoker.Prefab.Manager {
         #endregion
 
         //초기화 : 게임 매니저에 자동으로 등록
-        private void Awake() {
+        private void Start() {
             GameManager.Instance.managerReset.Add(this);
         }
 

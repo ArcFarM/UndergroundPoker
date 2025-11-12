@@ -136,10 +136,17 @@ namespace UnderGroundPoker.Manager {
             shotgun.Reload(tBulletCount, fBulletCount);
             //각 플레이어에게 특수 카드 지급하기
             int sCardCount = stageinfo.SpecialCardCount[currStage - 1];
-            //각 플레이어에게 카드 나눠주기
+            
             foreach(PlayerManager player in players) {
                 player.SpecialHand.AddSpecialCard(sCardCount);
+                List<GameObject> startHand = GameManager.Instance.Carddeck.DrawCard(5);
+                foreach(GameObject cardObj in startHand) {
+                    Card card = cardObj.GetComponent<Card>();
+                    player.PlayerHand.AddCard(card);
+                }
             }
+            //각 플레이어에게 카드 나눠주기
+
 
         }
 
