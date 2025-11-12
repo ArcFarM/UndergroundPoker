@@ -227,6 +227,138 @@ Transform:
   m_Children: []
   m_Father: {fileID: 357432786}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &254716267
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 254716269}
+  - component: {fileID: 254716268}
+  m_Layer: 0
+  m_Name: Spline
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &254716268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 254716267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dab5c7d4c32e743048dfca98e2d5914f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Spline:
+    m_EditModeType: 1
+    m_Knots: []
+    m_MetaData: []
+    m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
+  m_Splines:
+  - m_EditModeType: 1
+    m_Knots:
+    - Position:
+        x: -5
+        y: -1
+        z: 0
+      TangentIn:
+        x: 0
+        y: 0
+        z: 0
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0
+      Rotation:
+        value:
+          x: 0.5
+          y: 0.5
+          z: 0.5
+          w: 0.5
+    - Position:
+        x: 0
+        y: 0
+        z: -0
+      TangentIn:
+        x: 0
+        y: 0
+        z: -1.6666665
+      TangentOut:
+        x: 0
+        y: 0
+        z: 1.6666665
+      Rotation:
+        value:
+          x: 0.5000001
+          y: 0.50000006
+          z: 0.5
+          w: 0.49999994
+    - Position:
+        x: 5
+        y: -1
+        z: 0
+      TangentIn:
+        x: -0
+        y: -0
+        z: -0.50990194
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.50990194
+      Rotation:
+        value:
+          x: 0.5468355
+          y: 0.44829783
+          z: 0.4482979
+          w: 0.5468354
+    m_MetaData:
+    - Mode: 1
+      Tension: 0.5
+    - Mode: 3
+      Tension: 0.5
+    - Mode: 0
+      Tension: 0.5
+    m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
+  m_Knots:
+    m_KnotsLink: []
+--- !u!4 &254716269
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 254716267}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.41, z: 3.35}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &357432785
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,7 +374,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &357432786
 Transform:
   m_ObjectHideFlags: 0
@@ -481,6 +613,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 357432786}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1133418557 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7293815716394718138, guid: 3dfee2735f781234ba9024063117c572, type: 3}
+  m_PrefabInstance: {fileID: 7860184290722163720}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1133418558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133418557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b29c232f4385a64db975599263fc418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHandSize: 5
+  cardPrefab: {fileID: 3041974348972012904, guid: 1124c02b1b41dfc438b31867b13e09bc, type: 3}
+  splineContainer: {fileID: 254716268}
+  spawnPoint: {fileID: 1682290989}
 --- !u!1 &1188473425
 GameObject:
   m_ObjectHideFlags: 0
@@ -806,6 +959,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 357432786}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1682290988
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1682290989}
+  m_Layer: 0
+  m_Name: CardSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1682290989
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1682290988}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.29, y: 3.34, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1964438400
 GameObject:
   m_ObjectHideFlags: 0
@@ -1129,6 +1313,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BaseSets
       objectReference: {fileID: 0}
+    - target: {fileID: 8437463758064920822, guid: 8661d75c7fea89040abf1b3b945343fb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1206,7 +1394,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7293815716394718138, guid: 3dfee2735f781234ba9024063117c572, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1133418558}
   m_SourcePrefab: {fileID: 100100000, guid: 3dfee2735f781234ba9024063117c572, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -1216,3 +1407,5 @@ SceneRoots:
   - {fileID: 2072465192}
   - {fileID: 357432786}
   - {fileID: 4028436276435516770}
+  - {fileID: 254716269}
+  - {fileID: 1682290989}
