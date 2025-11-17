@@ -136,8 +136,8 @@ namespace UnderGroundPoker.Manager {
             shotgun.Reload(tBulletCount, fBulletCount);
             //각 플레이어에게 특수 카드 지급하기
             int sCardCount = stageinfo.SpecialCardCount[currStage - 1];
-            
-            foreach(PlayerManager player in players) {
+            //각 플레이어에게 카드 나눠주기
+            foreach (PlayerManager player in players) {
                 player.SpecialHand.AddSpecialCard(sCardCount);
                 List<GameObject> startHand = GameManager.Instance.Carddeck.DrawCard(5);
                 foreach(GameObject cardObj in startHand) {
@@ -145,9 +145,8 @@ namespace UnderGroundPoker.Manager {
                     player.PlayerHand.AddCard(card);
                 }
             }
-            //각 플레이어에게 카드 나눠주기
 
-
+            //TODO : UI를 통해 게임 진행
         }
 
         public void RoundEnd() {
@@ -155,10 +154,13 @@ namespace UnderGroundPoker.Manager {
 
             //양 측의 패를 비교해서 승패 결정
             int gameResult = 0; //0:무승부, 1:플레이어 승리, 2:적 승리
-            gameResult = players[0].PlayerHand.CompareTo(players[0].PlayerHand.Result, players[1].PlayerHand.Result);
+            foreach(PlayerManager p in players) {
+                p.PlayerHand.EvaluateHand();
+            }
+                gameResult = players[0].PlayerHand.CompareTo(players[0].PlayerHand.Result, players[1].PlayerHand.Result);
             //승자/패자 처리 - 승자가 베팅한 만큼 발사하기
             GetPlayerBets();
-
+            Debug.Log(gameResult);
             if (gameResult == 1) {
                 for(int i = 0 ; i < playerBets[0]; i++)
                 {

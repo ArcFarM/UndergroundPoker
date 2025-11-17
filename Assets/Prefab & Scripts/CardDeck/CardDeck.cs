@@ -176,21 +176,20 @@ namespace UnderGroundPoker.Prefab.Card
             List<GameObject> cards = new List<GameObject>();
 
             int index = 0;
-            while(cards.Count < n && index < transform.childCount)
+            while(cards.Count < n)
             {
-                GameObject topCard = transform.GetChild(index).gameObject;
+                //뽑을 카드가 모자란 경우
+                if (index >= currDeck.transform.childCount) return null;
+
+                GameObject topCard = currDeck.transform.GetChild(index).gameObject;
                 if (topCard.activeSelf)
                 {
                     cards.Add(topCard);
                     topCard.SetActive(false);
                 }
-                else continue;
 
                 index++;
             }
-
-            //뽑을 카드가 모자라면 null 반환
-            if (cards.Count < n) return null;
 
             //카드 다 뽑고 높이 재조정
             ArrangeHeight();
