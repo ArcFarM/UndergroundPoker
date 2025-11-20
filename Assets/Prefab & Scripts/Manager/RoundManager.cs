@@ -160,7 +160,7 @@ namespace UnderGroundPoker.Manager {
                 gameResult = players[0].PlayerHand.CompareTo(players[0].PlayerHand.Result, players[1].PlayerHand.Result);
             //승자/패자 처리 - 승자가 베팅한 만큼 발사하기
             GetPlayerBets();
-            Debug.Log(gameResult);
+            //Debug.Log(gameResult);
             if (gameResult == 1) {
                 for(int i = 0 ; i < playerBets[0]; i++)
                 {

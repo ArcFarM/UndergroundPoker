@@ -182,9 +182,10 @@ namespace UnderGroundPoker.Prefab.Card
                 if (index >= currDeck.transform.childCount) return null;
 
                 GameObject topCard = currDeck.transform.GetChild(index).gameObject;
+                GameObject duplicate = Instantiate(topCard);
                 if (topCard.activeSelf)
                 {
-                    cards.Add(topCard);
+                    cards.Add(duplicate);
                     topCard.SetActive(false);
                 }
 
