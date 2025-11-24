@@ -95,13 +95,6 @@ namespace UnderGroundPoker.Prefab.Card
             cards.Clear();
         }
 
-        public void ReplaceCard(int index, Card card)
-        {
-            //내 손패의 index 위치에 있는 카드를 card로 교체
-            RemoveCard(hand[index]);
-            hand.Insert(index, card);
-        }
-
         public void SortCard()
         {
             //족보를 이루기 전 : 숫자 >> 문양 순으로 정렬

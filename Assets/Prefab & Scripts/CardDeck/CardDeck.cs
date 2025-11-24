@@ -155,14 +155,14 @@ namespace UnderGroundPoker.Prefab.Card
             for (int i = 0; i < count; i++)
             {
                 Transform card = transform.GetChild(i);
-                if (card.gameObject.activeSelf) activeCount++;
+                if (card.gameObject.activeSelf && card.GetComponent<Card>().IsInDeck) activeCount++;
             }
             
             float deckHeight = activeCount * cardHeight;
             for (int i = 0; i < count; i++)
             {
                 Transform card = transform.GetChild(i);
-                if (card.gameObject.activeSelf)
+                if (card.gameObject.activeSelf && card.GetComponent<Card>().IsInDeck)
                 {
                     card.localPosition = new Vector3(0, 0, activeCount * cardHeight / baseHeight);
                     activeCount--;
@@ -182,11 +182,10 @@ namespace UnderGroundPoker.Prefab.Card
                 if (index >= currDeck.transform.childCount) return null;
 
                 GameObject topCard = currDeck.transform.GetChild(index).gameObject;
-                GameObject duplicate = Instantiate(topCard);
                 if (topCard.activeSelf)
                 {
-                    cards.Add(duplicate);
-                    topCard.SetActive(false);
+                    cards.Add(topCard);
+                    //topCard.SetActive(false);
                 }
 
                 index++;

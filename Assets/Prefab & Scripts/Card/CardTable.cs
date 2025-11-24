@@ -38,7 +38,7 @@ public class CardTable : MonoBehaviour
     //Horizontal Layout을 사용한 것 처럼 일정한 간격을 두고 자동으로 배치 되게 하기
     void ArrangeWidth() {
         cardCount = hand.Hand.Count;
-
+        
         float leftMost = -width / 2f;
         float rightMost = width / 2f;
 
@@ -47,11 +47,12 @@ public class CardTable : MonoBehaviour
 
         for(int i = 0; i < cardCount; i++) {
             Vector3 targetPos = Vector3.Lerp(startPos, endPos, (float)i / cardCount);
-            hand.Hand[i].transform.position = targetPos;
+            
             hand.Hand[i].transform.SetParent(this.transform);
+            hand.Hand[i].transform.localPosition = targetPos;
             hand.Hand[i].transform.localRotation = Quaternion.identity;
+            hand.Hand[i].transform.localScale = Vector3.one;
         }
-
     }
 }
 

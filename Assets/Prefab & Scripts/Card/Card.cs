@@ -37,8 +37,9 @@ namespace UnderGroundPoker.Prefab.Card
         [SerializeField] private CardRank rank;
         //카드 선택 여부
         [SerializeField] private bool isSelected;
-        //카드 뒤집기 함수 용
+        //카드가 덱에 있는 지 여부
         bool isFront;
+        public bool IsInDeck { get; set; }
 
         #endregion
 
