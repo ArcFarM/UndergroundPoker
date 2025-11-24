@@ -122,9 +122,7 @@ namespace UnderGroundPoker.Prefab.Card
             GameObject[] cards = new GameObject[count];
             for (int i = 0; i < count; i++)
             {
-
                 cards[i] = transform.GetChild(i).gameObject;
-
             }
 
             //무작위 인덱스로 재설정 및 높이도 재설정
@@ -185,6 +183,8 @@ namespace UnderGroundPoker.Prefab.Card
                 if (topCard.activeSelf)
                 {
                     cards.Add(topCard);
+                    topCard.GetComponent<Card>().IsInDeck = false;
+                    topCard.transform.SetParent(null);
                     //topCard.SetActive(false);
                 }
 
@@ -201,12 +201,13 @@ namespace UnderGroundPoker.Prefab.Card
             //카드 덱에 카드 반납
             foreach(var card in cards)
             {
-                if(card == null || card.TryGetComponent<Card>(out Card c) == false)
+                if(card == null)
                 {
                     continue;
                 } else
                 {
-                    currDeckInfo[(c.Suit, c.Rank)].gameObject.SetActive(true);
+                    card.GetComponent<Card>().IsInDeck = true;
+                    card.transform.SetParent(this.transform);
                 }
             }
             //카드 다 반납하고 높이 재조정

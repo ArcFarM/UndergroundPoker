@@ -12,7 +12,7 @@ public class CardTable : MonoBehaviour
     PlayerHand hand;
 
     //현재 카드 매수
-    int cardCount = 0;
+    [SerializeField] int cardCount = 0;
 
     #endregion
     private void Start() {
@@ -38,20 +38,26 @@ public class CardTable : MonoBehaviour
     //Horizontal Layout을 사용한 것 처럼 일정한 간격을 두고 자동으로 배치 되게 하기
     void ArrangeWidth() {
         cardCount = hand.Hand.Count;
-        
+
+        if (cardCount == 0) return;
+
         float leftMost = -width / 2f;
         float rightMost = width / 2f;
 
-        Vector3 startPos = this.transform.position + new Vector3(leftMost, 0, 0);
-        Vector3 endPos = this.transform.position + new Vector3(rightMost, 0, 0);
+        //시작/끝 위치
+        Vector3 startPos = new Vector3(leftMost, 0, 0);
+        Vector3 endPos = new Vector3(rightMost, 0, 0);
 
-        for(int i = 0; i < cardCount; i++) {
-            Vector3 targetPos = Vector3.Lerp(startPos, endPos, (float)i / cardCount);
-            
-            hand.Hand[i].transform.SetParent(this.transform);
-            hand.Hand[i].transform.localPosition = targetPos;
-            hand.Hand[i].transform.localRotation = Quaternion.identity;
-            hand.Hand[i].transform.localScale = Vector3.one;
+        for (int i = 0; i < cardCount; i++) {
+            float t = (cardCount == 1) ? 0.5f : (float)i / (cardCount - 1);
+            Vector3 targetPos = Vector3.Lerp(startPos, endPos, t);
+            targetPos.z = 0f;
+
+            Transform cardTf = hand.Hand[i].transform;
+            cardTf.SetParent(this.transform);
+            cardTf.localPosition = targetPos;
+            cardTf.localRotation = Quaternion.identity;
+            cardTf.localScale = Vector3.one;
         }
     }
 }
