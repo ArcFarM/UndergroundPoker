@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using UnderGroundPoker.Prefab.Manager;
+using UnderGroundPoker.Manager;
 using UnityEngine;
 
 namespace UnderGroundPoker.Objects {

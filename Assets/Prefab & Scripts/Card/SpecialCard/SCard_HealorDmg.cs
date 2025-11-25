@@ -1,5 +1,5 @@
 using UnderGroundPoker.Prefab.Card;
-using UnderGroundPoker.Prefab.Manager;
+using UnderGroundPoker.Manager;
 using UnityEngine;
 
 namespace UnderGroundPoker.Prefab.Card

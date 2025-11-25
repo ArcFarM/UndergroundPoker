@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnderGroundPoker.Objects;
 using UnderGroundPoker.Prefab.Card;
-using UnderGroundPoker.Prefab.Manager;
 using UnityEngine;
 
 

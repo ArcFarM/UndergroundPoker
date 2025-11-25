@@ -4,103 +4,53 @@ using UnderGroundPoker.Manager;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace UnderGroundPoker.Prefab.Card
-{
-    public class CardDeck : MonoBehaviour
-    {
-        /*
-         
-        카드덱 리팩토링 방안
-        1. 오브젝트를 직접 주는게 아니라, 활성/비활성화 시키고 그 복사본을 지급
-        2. SCardInfo처럼 일반 카드도 CardInfo 역할을 하는 Card 속성이 있으니까 그걸로 관리하면 됨
-        3. TODO : 반환 시 어떻게 빠르게 하냐 <<< 배열 또는 딕셔너리처럼 O(1)로 접근 가능한 자료구조 사용
-        4. TODO : 게임오브젝트 반환 대신에 카드 속성만 반환하고, 오브젝트 복사본은 카드 속성을 사용하는 다른 메서드에서 생성하는건? 생각해보기
+namespace UnderGroundPoker.Prefab.Card {
+    public class CardDeck : MonoBehaviour {
 
-         
-         */
-        /*카드 덱이 구현해야 할 기능
-
-        2. 카드 나눠주기
-            1. 위에서부터 카드 5장 나눠주기
-            2. 카드가 덱에서 뽑혀서 플레이어에게 전달되야 함
-            3. 어떤 카드가 빠졌는 지 카드 덱이 알고 있어야 함
-        3. 카드 교체
-            1. 플레이어 또는 AI가 카드를 덱에 반납
-            2. 받아서 카드를 섞고, 반납한 수 만큼 다시 뽑아서 주기
-        4. 카드 현황에 따른 재배치
-            1. 현재 덱 매수에 맞게 카드 덱 전체 쌓인 높이를 재배치
-            2. 카드가 많을 수록 높이가 높아지고, 적을 수록 낮아짐
-            3. 기본 설정 : 카드 덱 높이는 53(52 + 조커)장에 대해 0.265f = 장당 0.005f
-
-         */
         #region Variables
-        float baseHeight = 0.265f; //52장 + 조커 1장 (카드 1장당 0.005f)
-        float cardHeight = 0.005f; //카드 1장당 높이
 
-        List<GameObject> graveyard; //버린 카드 더미
-        List<GameObject> removedCard; //제외된 카드 더미
+        //전체 카드 목록과 현재 덱에 있는 카드 목록와 현재 덱에 없는 카드 목록
+        Dictionary<(CardSuit, CardRank), GameObject> cardAll;
+        HashSet<(CardSuit, CardRank)> cardInDeck;
+        HashSet<(CardSuit, CardRank)> cardNotInDeck;
 
         public GameObject defaultDeck; //기본 덱
         public GameObject currDeck; //현재 덱
 
-        //덱에 어떤 카드가 남아있는 지 확인용
-
-        Dictionary<(CardSuit, CardRank), Card> startDeckInfo;
-        Dictionary<(CardSuit, CardRank), Card> currDeckInfo;
-
         #endregion
 
         #region Properties
-        public int CardCount => transform.childCount; //덱에 남아있는 카드 매수
-        public bool IsEmtpy => transform.childCount == 0; //덱이 비었는지 여부
-
-
         #endregion
 
         #region Unity Methods
 
-        void Start()
-        {
+        void Start() {
             DeckShuffle();
-            ArrangeHeight();
             FillCardInfo();
         }
 
-        void FillCardInfo()
-        {
+        void FillCardInfo() {
             //null check
-            if(defaultDeck == null)
-            {
+            if (defaultDeck == null) {
                 Debug.LogError("Default Deck is not assigned.");
                 return;
             }
 
-            if(startDeckInfo == null)
-            {
-                startDeckInfo = new Dictionary<(CardSuit, CardRank), Card>();
-            }
+            //덱 정보 채우기
+            cardAll = new Dictionary<(CardSuit, CardRank), GameObject>();
+            cardInDeck = new HashSet<(CardSuit, CardRank)>();
+            cardNotInDeck = new HashSet<(CardSuit, CardRank)>();
 
-            if(currDeckInfo == null)
-            {
-                currDeckInfo = new Dictionary<(CardSuit, CardRank), Card>();
-            }
-
-            for (int i = 0; i < defaultDeck.transform.childCount; i++)
-            {
+            for (int i = 0; i < defaultDeck.transform.childCount; i++) {
                 Card card = defaultDeck.transform.GetChild(i).GetComponent<Card>();
                 var key = (card.Suit, card.Rank);
-                if (!startDeckInfo.ContainsKey(key))
-                {
-                    startDeckInfo[key] = card;
-                }
+                cardAll.TryAdd(key, defaultDeck.transform.GetChild(i).gameObject);
+                cardInDeck.Add(key);
             }
-
-
         }
 
         // Update is called once per frame
-        void Update()
-        {
+        void Update() {
 
         }
 
@@ -109,143 +59,58 @@ namespace UnderGroundPoker.Prefab.Card
         #region Custom Methods
 
         #region Default Deck Functions
-        public void DeckShuffle()
-        {
-            /*
-                        카드 섞기
-            2. 무작위로 카드를 섞어 놓고
-            3. 카드 섞기 애니메이션 실행
-                */
-
-            //자식 오브젝트들 중 활성화된 오브젝트들 가져오기
-            int count = transform.childCount;
-            GameObject[] cards = new GameObject[count];
-            for (int i = 0; i < count; i++)
-            {
-                cards[i] = transform.GetChild(i).gameObject;
-            }
-
-            //무작위 인덱스로 재설정 및 높이도 재설정
-            for (int i = 0; i < count * 5; i++)
-            {
-                int rnd = UnityEngine.Random.Range(0, count);
-                int idx = i % count;
-                GameObject toChange = cards[idx];
-                GameObject changeWith = cards[rnd];
-                //인덱스 재설정
-                toChange.transform.SetSiblingIndex(rnd);
-                changeWith.transform.SetSiblingIndex(idx);
-                //높이 재설정
-                toChange.transform.localPosition = new Vector3(0, 0, rnd * cardHeight / baseHeight);
-                changeWith.transform.localPosition = new Vector3(0, 0, idx * cardHeight / baseHeight);
-            }
-
+        public void DeckShuffle() {
             //카드 섞기 애니메이션 실행
             Animator animator = GetComponent<Animator>();
             animator.SetTrigger("Shuffle");
         }
 
-        public void ArrangeHeight()
-        {
-            //덱 높이 재조정
-            int count = transform.childCount;
-            int activeCount = 0;
-            for (int i = 0; i < count; i++)
-            {
-                Transform card = transform.GetChild(i);
-                if (card.gameObject.activeSelf && card.GetComponent<Card>().IsInDeck) activeCount++;
-            }
-            
-            float deckHeight = activeCount * cardHeight;
-            for (int i = 0; i < count; i++)
-            {
-                Transform card = transform.GetChild(i);
-                if (card.gameObject.activeSelf && card.GetComponent<Card>().IsInDeck)
-                {
-                    card.localPosition = new Vector3(0, 0, activeCount * cardHeight / baseHeight);
-                    activeCount--;
-                }
-            }
-        }
-
-        public List<GameObject> DrawCard(int n)
-        {
-            //덱 맨 위에서 카드 n장 뽑기 (안되면 가능한 만큼)
+        public List<GameObject> DrawCard(int n) {
+            //카드 n장 뽑기 - 평범한 5장 카드 포커이므로 덱이 모자랄 일은 없음
             List<GameObject> cards = new List<GameObject>();
 
-            int index = 0;
-            while(cards.Count < n)
-            {
-                //뽑을 카드가 모자란 경우
-                if (index >= currDeck.transform.childCount) return null;
+            var suits = Enum.GetValues(typeof(CardSuit));
+            var ranks = Enum.GetValues(typeof(CardRank));
 
-                GameObject topCard = currDeck.transform.GetChild(index).gameObject;
-                if (topCard.activeSelf)
-                {
-                    cards.Add(topCard);
-                    topCard.GetComponent<Card>().IsInDeck = false;
-                    topCard.transform.SetParent(null);
-                    //topCard.SetActive(false);
+            while (cards.Count < n) {
+                //무작위 카드 선택
+                CardSuit randomSuit = (CardSuit)suits.GetValue(UnityEngine.Random.Range(0, suits.Length));
+                CardRank randomRank = (CardRank)ranks.GetValue(UnityEngine.Random.Range(0, ranks.Length));
+                var key = (randomSuit, randomRank);
+                //덱에 있는 카드인지 확인
+                if (cardInDeck.Remove(key)) {
+                    //덱에서 카드 제거 및 반환 리스트에 추가
+                    cardNotInDeck.Add(key);
+                    cards.Add(Instantiate(cardAll[key]));
                 }
-
-                index++;
             }
-
-            //카드 다 뽑고 높이 재조정
-            ArrangeHeight();
             return cards;
         }
 
-        public void ReturnCard(List<GameObject> cards)
-        {
+        public void ReturnCard(List<GameObject> cards) {
             //카드 덱에 카드 반납
-            foreach(var card in cards)
-            {
-                if(card == null)
-                {
-                    continue;
-                } else
-                {
-                    card.GetComponent<Card>().IsInDeck = true;
-                    card.transform.SetParent(this.transform);
+
+            foreach (var cardObj in cards) {
+                Card card = cardObj.GetComponent<Card>();
+                var key = (card.Suit, card.Rank);
+                if (cardNotInDeck.Contains(key)) {
+                    cardNotInDeck.Remove(key);
+                    cardInDeck.Add(key);
                 }
+                Destroy(cardObj);
             }
-            //카드 다 반납하고 높이 재조정
-            ArrangeHeight();
+            cards.Clear();
         }
 
-        public GameObject SearchCard(CardSuit suit, CardRank rank)
-        {
-            //덱에서 특정 카드 찾기
-            if(currDeckInfo.TryGetValue((suit, rank), out Card card))
-            {
-                GameObject result = Instantiate(card.gameObject);
-                return result;
+        public void DeckReset() {
+            //덱 초기화
+            cardInDeck.Clear();
+            cardNotInDeck.Clear();
+            foreach (var key in cardAll.Keys) {
+                cardInDeck.Add(key);
             }
-            return null;
         }
 
-        public void DeckReset()
-        {
-            //덱 리셋
-            foreach(var player in GameManager.Instance.Players)
-            {
-                if(player.TryGetComponent<PlayerHand>(out PlayerHand hand)) {
-                    List<Card> playerCards = hand.Hand;
-                    foreach(var card in playerCards)
-                    {
-                        ReturnCard(new List<GameObject> { card.gameObject });
-                    }
-                    hand.AllClear();
-                }
-            }
-            DeckShuffle();
-            ArrangeHeight();
-        }
-
-        public Card PeekCard() {
-            return transform.GetChild(transform.childCount - 1).GetComponent<Card>();
-        }
         #endregion
 
         #region special card interaction

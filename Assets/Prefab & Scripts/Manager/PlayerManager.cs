@@ -1,10 +1,7 @@
-using UnderGroundPoker.Manager;
 using UnderGroundPoker.Prefab.Card;
-using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
-namespace UnderGroundPoker.Prefab.Manager {
+namespace UnderGroundPoker.Manager {
     //각  플레이어에 부착될 플레이어 매니저
     public class PlayerManager : MonoBehaviour, IManagerReset {
         #region player variables

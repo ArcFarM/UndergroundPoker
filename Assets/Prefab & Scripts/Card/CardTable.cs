@@ -1,5 +1,5 @@
 using UnderGroundPoker.Prefab.Card;
-using UnderGroundPoker.Prefab.Manager;
+using UnderGroundPoker.Manager;
 using UnityEngine;
 
 public class CardTable : MonoBehaviour
@@ -19,27 +19,16 @@ public class CardTable : MonoBehaviour
         if(player != null)
         {
             hand = player.PlayerHand;
-        }
-    }
-
-    private void Update() {
-        if(player == null || hand.Hand.Count == 0)
-        {
-            Start();
-            return;
-        }
-
-        if (cardCount != hand.Hand.Count)
-        {
+            hand.OnHandChanged += ArrangeWidth;
             ArrangeWidth();
+            cardCount = hand.Hand.Count;
         }
     }
 
     //Horizontal Layout을 사용한 것 처럼 일정한 간격을 두고 자동으로 배치 되게 하기
     void ArrangeWidth() {
         cardCount = hand.Hand.Count;
-
-        if (cardCount == 0) return;
+        if (cardCount == 0 || hand == null) return;
 
         float leftMost = -width / 2f;
         float rightMost = width / 2f;
@@ -60,6 +49,12 @@ public class CardTable : MonoBehaviour
             cardTf.localScale = Vector3.one;
         }
     }
-}
+
+    private void OnDisable() {
+        if(hand != null)
+            hand.OnHandChanged -= ArrangeWidth;
+    }
+}   
+
 
 

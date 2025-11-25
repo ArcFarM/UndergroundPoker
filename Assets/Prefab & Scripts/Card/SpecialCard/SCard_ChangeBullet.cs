@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnderGroundPoker.Prefab.Manager;
+using UnderGroundPoker.Manager;
 using UnderGroundPoker.Manager;
 using UnderGroundPoker.Objects;
 

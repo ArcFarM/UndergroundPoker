@@ -1,4 +1,4 @@
-using UnderGroundPoker.Prefab.Manager;
+using UnderGroundPoker.Manager;
 using UnityEngine;
 using UnityEngine.UI;
 

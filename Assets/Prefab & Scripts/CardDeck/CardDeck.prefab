@@ -223,7 +223,6 @@ MonoBehaviour:
   suit: 3
   rank: 2
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &102614115511770004
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,7 +446,6 @@ MonoBehaviour:
   suit: 3
   rank: 13
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &212358418006221738
 GameObject:
   m_ObjectHideFlags: 0
@@ -932,7 +930,6 @@ MonoBehaviour:
   suit: 1
   rank: 8
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &445035865530389175
 GameObject:
   m_ObjectHideFlags: 0
@@ -982,7 +979,6 @@ MonoBehaviour:
   suit: 3
   rank: 6
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &477568411598934746
 GameObject:
   m_ObjectHideFlags: 0
@@ -1119,7 +1115,6 @@ MonoBehaviour:
   suit: 1
   rank: 4
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &617700990628557929
 GameObject:
   m_ObjectHideFlags: 0
@@ -1604,7 +1599,6 @@ MonoBehaviour:
   suit: 2
   rank: 2
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &1026761994819420222
 GameObject:
   m_ObjectHideFlags: 0
@@ -2002,7 +1996,6 @@ MonoBehaviour:
   suit: 2
   rank: 9
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &1155686310650865438
 GameObject:
   m_ObjectHideFlags: 0
@@ -2574,7 +2567,6 @@ MonoBehaviour:
   suit: 3
   rank: 5
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &1639178469577481554
 GameObject:
   m_ObjectHideFlags: 0
@@ -2784,7 +2776,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultDeck: {fileID: 0}
   currDeck: {fileID: 0}
-  beforeLastModify: {fileID: 0}
 --- !u!1 &1655717280847113534
 GameObject:
   m_ObjectHideFlags: 0
@@ -2921,7 +2912,6 @@ MonoBehaviour:
   suit: 0
   rank: 9
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &1750863645332821094
 GameObject:
   m_ObjectHideFlags: 0
@@ -2971,7 +2961,6 @@ MonoBehaviour:
   suit: 0
   rank: 4
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &1769098692567794441
 GameObject:
   m_ObjectHideFlags: 0
@@ -3282,7 +3271,6 @@ MonoBehaviour:
   suit: 1
   rank: 9
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &2003085679315049516
 GameObject:
   m_ObjectHideFlags: 0
@@ -3396,7 +3384,7 @@ Transform:
   m_GameObject: {fileID: 2027588621579036620}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.125}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3419,7 +3407,6 @@ MonoBehaviour:
   suit: 3
   rank: 9
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &2094745934897835018
 GameObject:
   m_ObjectHideFlags: 0
@@ -3730,7 +3717,6 @@ MonoBehaviour:
   suit: 2
   rank: 12
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &2396870730334419014
 GameObject:
   m_ObjectHideFlags: 0
@@ -3780,7 +3766,6 @@ MonoBehaviour:
   suit: 2
   rank: 11
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &2432864775615131166
 GameObject:
   m_ObjectHideFlags: 0
@@ -3830,7 +3815,6 @@ MonoBehaviour:
   suit: 2
   rank: 4
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &2445283695070048101
 GameObject:
   m_ObjectHideFlags: 0
@@ -4141,7 +4125,6 @@ MonoBehaviour:
   suit: 2
   rank: 7
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &2591173941499910545
 GameObject:
   m_ObjectHideFlags: 0
@@ -4191,7 +4174,6 @@ MonoBehaviour:
   suit: 3
   rank: 12
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &2657928578940512959
 GameObject:
   m_ObjectHideFlags: 0
@@ -4937,7 +4919,6 @@ MonoBehaviour:
   suit: 3
   rank: 11
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &3150618962178025122
 GameObject:
   m_ObjectHideFlags: 0
@@ -5161,7 +5142,6 @@ MonoBehaviour:
   suit: 1
   rank: 3
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &3282015499593015018
 GameObject:
   m_ObjectHideFlags: 0
@@ -5472,7 +5452,6 @@ MonoBehaviour:
   suit: 0
   rank: 12
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &3632654202394079471
 GameObject:
   m_ObjectHideFlags: 0
@@ -5696,7 +5675,6 @@ MonoBehaviour:
   suit: 0
   rank: 13
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &3794956638645269961
 GameObject:
   m_ObjectHideFlags: 0
@@ -5833,7 +5811,6 @@ MonoBehaviour:
   suit: 0
   rank: 5
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &3843013825079080706
 GameObject:
   m_ObjectHideFlags: 0
@@ -6208,7 +6185,7 @@ Transform:
   m_GameObject: {fileID: 3897942299096000899}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.15865384}
+  m_LocalPosition: {x: -1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6231,7 +6208,6 @@ MonoBehaviour:
   suit: 2
   rank: 14
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &4039472640274527602
 GameObject:
   m_ObjectHideFlags: 0
@@ -6455,7 +6431,6 @@ MonoBehaviour:
   suit: 2
   rank: 3
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &4233079981952764320
 GameObject:
   m_ObjectHideFlags: 0
@@ -6766,7 +6741,6 @@ MonoBehaviour:
   suit: 0
   rank: 8
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &4467044046622536897
 GameObject:
   m_ObjectHideFlags: 0
@@ -6816,7 +6790,6 @@ MonoBehaviour:
   suit: 1
   rank: 14
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &4473737514765218275
 GameObject:
   m_ObjectHideFlags: 0
@@ -6866,7 +6839,6 @@ MonoBehaviour:
   suit: 1
   rank: 12
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &4496151587325597977
 GameObject:
   m_ObjectHideFlags: 0
@@ -6916,7 +6888,6 @@ MonoBehaviour:
   suit: 1
   rank: 2
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &4507484663368736692
 GameObject:
   m_ObjectHideFlags: 0
@@ -6943,7 +6914,7 @@ Transform:
   m_GameObject: {fileID: 4507484663368736692}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.21634616}
+  m_LocalPosition: {x: 0.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6966,7 +6937,6 @@ MonoBehaviour:
   suit: 0
   rank: 3
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &4514178139910744339
 GameObject:
   m_ObjectHideFlags: 0
@@ -7016,7 +6986,6 @@ MonoBehaviour:
   suit: 0
   rank: 2
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &4733077040678699110
 GameObject:
   m_ObjectHideFlags: 0
@@ -7066,7 +7035,6 @@ MonoBehaviour:
   suit: 0
   rank: 14
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &4816540654127088009
 GameObject:
   m_ObjectHideFlags: 0
@@ -7203,7 +7171,6 @@ MonoBehaviour:
   suit: 0
   rank: 6
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &4942928040096225832
 GameObject:
   m_ObjectHideFlags: 0
@@ -7601,7 +7568,6 @@ MonoBehaviour:
   suit: 1
   rank: 7
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &5586611282900375277
 GameObject:
   m_ObjectHideFlags: 0
@@ -7651,7 +7617,6 @@ MonoBehaviour:
   suit: 2
   rank: 10
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &5637073939155348115
 GameObject:
   m_ObjectHideFlags: 0
@@ -7875,7 +7840,6 @@ MonoBehaviour:
   suit: 1
   rank: 13
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &5747899736772880611
 GameObject:
   m_ObjectHideFlags: 0
@@ -8273,7 +8237,6 @@ MonoBehaviour:
   suit: 0
   rank: 11
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &6110791375516647864
 GameObject:
   m_ObjectHideFlags: 0
@@ -8323,7 +8286,6 @@ MonoBehaviour:
   suit: 2
   rank: 8
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &6142599958074923781
 GameObject:
   m_ObjectHideFlags: 0
@@ -8373,7 +8335,6 @@ MonoBehaviour:
   suit: 3
   rank: 4
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &6206968693155716732
 GameObject:
   m_ObjectHideFlags: 0
@@ -8423,7 +8384,6 @@ MonoBehaviour:
   suit: 1
   rank: 11
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &6274901977575374249
 GameObject:
   m_ObjectHideFlags: 0
@@ -8473,7 +8433,6 @@ MonoBehaviour:
   suit: 3
   rank: 10
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &6295285386394819136
 GameObject:
   m_ObjectHideFlags: 0
@@ -8784,7 +8743,6 @@ MonoBehaviour:
   suit: 3
   rank: 7
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &6755385297848615086
 GameObject:
   m_ObjectHideFlags: 0
@@ -9095,7 +9053,6 @@ MonoBehaviour:
   suit: 1
   rank: 6
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &7109185311650136269
 GameObject:
   m_ObjectHideFlags: 0
@@ -9232,7 +9189,6 @@ MonoBehaviour:
   suit: 3
   rank: 14
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &7233582665271600150
 GameObject:
   m_ObjectHideFlags: 0
@@ -9456,7 +9412,6 @@ MonoBehaviour:
   suit: 2
   rank: 5
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &7354029238675815723
 GameObject:
   m_ObjectHideFlags: 0
@@ -9593,7 +9548,6 @@ MonoBehaviour:
   suit: 3
   rank: 8
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &7400939987911159679
 GameObject:
   m_ObjectHideFlags: 0
@@ -9817,7 +9771,6 @@ MonoBehaviour:
   suit: 0
   rank: 10
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &7472844844213578622
 GameObject:
   m_ObjectHideFlags: 0
@@ -9931,7 +9884,7 @@ Transform:
   m_GameObject: {fileID: 7494633194322095663}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.22596154}
+  m_LocalPosition: {x: -0.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9954,7 +9907,6 @@ MonoBehaviour:
   suit: 3
   rank: 3
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &7510702181378938930
 GameObject:
   m_ObjectHideFlags: 0
@@ -10613,7 +10565,6 @@ MonoBehaviour:
   suit: 0
   rank: 7
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &8011651600074754361
 GameObject:
   m_ObjectHideFlags: 0
@@ -10750,7 +10701,6 @@ MonoBehaviour:
   suit: 4
   rank: 15
   isSelected: 0
-  cardPrefab: {fileID: 4900018578870380158, guid: f2d8e07c046db4ef0bb5ca5323a846cf, type: 3}
 --- !u!1 &8176821975464698363
 GameObject:
   m_ObjectHideFlags: 0
@@ -11235,7 +11185,6 @@ MonoBehaviour:
   suit: 1
   rank: 10
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &8419302648648275130
 GameObject:
   m_ObjectHideFlags: 0
@@ -11546,7 +11495,6 @@ MonoBehaviour:
   suit: 2
   rank: 6
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &8782252388867177974
 GameObject:
   m_ObjectHideFlags: 0
@@ -11596,7 +11544,6 @@ MonoBehaviour:
   suit: 1
   rank: 5
   isSelected: 0
-  cardPrefab: {fileID: 0}
 --- !u!1 &8803423573681727032
 GameObject:
   m_ObjectHideFlags: 0
@@ -11971,7 +11918,7 @@ Transform:
   m_GameObject: {fileID: 9165337832912420632}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.17307693}
+  m_LocalPosition: {x: 1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11994,4 +11941,3 @@ MonoBehaviour:
   suit: 2
   rank: 13
   isSelected: 0
-  cardPrefab: {fileID: 0}

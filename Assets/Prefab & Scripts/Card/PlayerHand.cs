@@ -63,6 +63,9 @@ namespace UnderGroundPoker.Prefab.Card
         public bool HasJoker { get => hasJoker; set => hasJoker = value; }
         #endregion
 
+        //카드 테이블과 연동
+        public event System.Action OnHandChanged;
+
         #region Unity Event Methods
         private void Start()
         {
@@ -77,8 +80,11 @@ namespace UnderGroundPoker.Prefab.Card
         public void AddCard(Card card)
         {
             //
-            if(hand.Count < handSize)
+            if(hand.Count < handSize) {
                 hand.Add(card);
+                OnHandChanged?.Invoke();
+            }
+                
             else
             {
                 //TODO : 먼저 손패를 4장까지 줄이고 카드를 추가
@@ -93,6 +99,7 @@ namespace UnderGroundPoker.Prefab.Card
             //그 후 손패에서 삭제
             hand.Remove(card);
             cards.Clear();
+            OnHandChanged?.Invoke();
         }
 
         public void SortCard()
