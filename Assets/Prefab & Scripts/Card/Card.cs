@@ -103,11 +103,13 @@ namespace UnderGroundPoker.Prefab.Card
         {
             if(isSelected)
             {
+                Debug.Log("Card DeSelected");
                 //선택 시각적 효과 제거
                 //비선택 상태로 돌아가기
             }
             else
             {
+                Debug.Log("Card Selected");
                 //선택 시각적 효과 추가
                 //선택 상태로 변경
             }
